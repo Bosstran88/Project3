@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jJy5yeKJx4OSXtmJBhQHFvP/sq7tW85fvKb/kmEhraa3sGaVk3Zg2hVW6JldV2WQAfoGhWbASCy45PXpKu5+Fw==",
+  "dgSpecHash": "8inKYtSoBZ342trimkKOxojoMJUlFNt6WrD2bquKp9n/sLb3TE/IXVMGW3c9EhcFu26/3RL+lWSO8/OaRh7Gaw==",
   "success": true,
-  "projectFilePath": "D:\\C#\\SymphonyLtd\\Project3_Backend\\Project3\\Project3.csproj",
+  "projectFilePath": "D:\\C#\\SymphonyLtd\\Project3_Fix1\\Project3\\Project3\\Project3.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tran Anh Muoi\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Tran Anh Muoi\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
@@ -86,12 +86,6 @@
     "C:\\Users\\Tran Anh Muoi\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512"
   ],
   "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file D:\\C#\\SymphonyLtd\\Project3_Backend\\Project3\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    },
     {
       "code": "NU1701",
       "level": "Warning",

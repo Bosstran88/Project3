@@ -3908,11 +3908,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\C#\\SymphonyLtd\\Project3_Backend\\Project3\\Project3.csproj",
+      "projectUniqueName": "D:\\C#\\SymphonyLtd\\Project3_Fix1\\Project3\\Project3\\Project3.csproj",
       "projectName": "Project3",
-      "projectPath": "D:\\C#\\SymphonyLtd\\Project3_Backend\\Project3\\Project3.csproj",
+      "projectPath": "D:\\C#\\SymphonyLtd\\Project3_Fix1\\Project3\\Project3\\Project3.csproj",
       "packagesPath": "C:\\Users\\Tran Anh Muoi\\.nuget\\packages\\",
-      "outputPath": "D:\\C#\\SymphonyLtd\\Project3_Backend\\Project3\\obj\\",
+      "outputPath": "D:\\C#\\SymphonyLtd\\Project3_Fix1\\Project3\\Project3\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Tran Anh Muoi\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -3996,12 +3996,6 @@
     }
   },
   "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file D:\\C#\\SymphonyLtd\\Project3_Backend\\Project3\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    },
     {
       "code": "NU1701",
       "level": "Warning",
