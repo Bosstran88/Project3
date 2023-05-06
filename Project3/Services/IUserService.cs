@@ -9,6 +9,8 @@ namespace Project3.Services
         BaseResponse RegisterAdmin(RegisterUser registerUser);
         BaseResponse LoginUser(LoginUser loginUser);
         BaseResponse LoginUAdmin(LoginUser loginUser);
+        BaseResponse register(RegisterReq registerUser);
+        BaseResponse login(LoginUser loginUser);
 
     }
 
