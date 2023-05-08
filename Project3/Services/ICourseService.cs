@@ -12,6 +12,7 @@ namespace Project3.Services
         BaseResponse getOne(long id);
         BaseResponse deleteCourse(long id);
         BaseResponse createOrUpdate(AddCourseReq addCourseReq);
+        public void test();
     }
     public class CourseService : ICourseService
     {
