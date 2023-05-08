@@ -36,19 +36,19 @@ namespace Project3.Services
 
         public BaseResponse getInfo(AuthenReq authen)
         {
-            var user = userRepo.getById(authen.Id);
+            var user = userRepo.getOne((long)authen.Id);
             if(user == null)
             {
                 return new BaseResponse(MESSAGE.STATUS_RESPONSE.UNAUTHORIZED, MESSAGE.VALIDATE.USER_NOT_FOUND);
             }
             if(authen.RoleName == MESSAGE.VALIDATE.ROLE_USER)
             {
-                var data = userRepo.getInfoUser(authen.Id);
+                var data = userRepo.getInfoUser((long)authen.Id);
                 return new BaseResponse(data);
             }
             else
             {
-                var data = userRepo.getInfoAdmin(authen.Id);
+                var data = userRepo.getInfoAdmin((long)authen.Id);
                 return new BaseResponse(data);
             }
         }

@@ -15,10 +15,10 @@ namespace Project3.Repositories
     {
         PageResponse<IPagedList<VRolePagin>> paginations(RoleReq roleReq);
         IEnumerable<VRolePagin> getAllRole();
-        void SaveRole(Role role);
+        void createOrUpdate(Role role);
         Role GetRoleById(long id);
-        void UpdateRole(Role role);
         Role FindByName(string roleName);
+        void deleteRole(Role role);
     }
 
     public class RoleRepo : IRoleRepo
@@ -80,13 +80,20 @@ namespace Project3.Repositories
             return new PageResponse<IPagedList<VRolePagin>>(pageData, (int)roleReq.pageNumber, (int)roleReq.pageSize, total, (int)pageTotal);
         }
 
-        public void SaveRole(Role role)
+        public void createOrUpdate(Role role)
         {
-            _context.Roles.Add(role);
+            if(role.Id == null)
+            {
+                _context.Roles.Add(role);
+            }
+            else
+            {
+                _context.Roles.Update(role);
+            }
             _context.SaveChanges();
         }
 
-        public void UpdateRole(Role role)
+        public void deleteRole(Role role)
         {
             _context.Roles.Update(role);
             _context.SaveChanges();

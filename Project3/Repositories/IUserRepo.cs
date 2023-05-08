@@ -17,7 +17,7 @@ namespace Project3.Repositories
 
         // Xóa Phần Trên
         bool UserExistsByUsername(string username);
-        User getById(long id);
+        User getOne(long id);
         void AddUser(User user);
         User getUserByName(string username);
         UserInfoResponse getInfoUser(long id);
@@ -79,7 +79,7 @@ namespace Project3.Repositories
             _context.SaveChangesAsync();
         }
 
-        public User getById(long id)
+        public User getOne(long id)
         {
             return _context.Users.Where(i => i.Id == id).First();
         }
