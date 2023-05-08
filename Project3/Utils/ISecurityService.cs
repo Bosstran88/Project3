@@ -70,6 +70,7 @@ namespace Project3.Utils
             {
                 new(ClaimTypes.Name, user.UserName),
                 new(ClaimTypes.NameIdentifier, id),
+                new(ClaimTypes.Role, role)
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetValue<string>("AppSettings:Token")));

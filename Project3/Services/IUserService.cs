@@ -1,4 +1,5 @@
 ﻿using Project3.Entity.Dto;
+using Project3.Entity.Request;
 using Project3.Entity.Response;
 using Project3.Models;
 using Project3.Repositories;
@@ -10,6 +11,7 @@ namespace Project3.Services
     {
         BaseResponse register(RegisterReq registerUser);
         BaseResponse login(LoginReq loginUser);
+        BaseResponse getInfo(AuthenReq authen);
     }
 
     public class UserService : IUserService
@@ -22,6 +24,7 @@ namespace Project3.Services
         IUserRoleRepo userRoleRepo;
         ISecurityService securityService;
         InformationStudent student;
+
         public UserService(IUserRoleRepo _userRoleRepo,IRoleRepo _roleRepo, IUserRepo _userRepo, ISecurityService _securityService, IInformationStudentRepo _studentRepo)
         {
             roleRepo = _roleRepo;
@@ -29,6 +32,25 @@ namespace Project3.Services
             userRoleRepo = _userRoleRepo;
             securityService = _securityService;
             studentRepo = _studentRepo;
+        }
+
+        public BaseResponse getInfo(AuthenReq authen)
+        {
+            var user = userRepo.getById(authen.Id);
+            if(user == null)
+            {
+                return new BaseResponse(MESSAGE.STATUS_RESPONSE.UNAUTHORIZED, MESSAGE.VALIDATE.USER_NOT_FOUND);
+            }
+            if(authen.RoleName == MESSAGE.VALIDATE.ROLE_USER)
+            {
+                var data = userRepo.getInfoUser(authen.Id);
+                return new BaseResponse(data);
+            }
+            else
+            {
+                var data = userRepo.getInfoAdmin(authen.Id);
+                return new BaseResponse(data);
+            }
         }
 
         public BaseResponse login(LoginReq loginUser)

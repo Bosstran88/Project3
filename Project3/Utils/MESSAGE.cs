@@ -21,6 +21,8 @@
             public const string REGISTER_FAIL = "Đăng kí thất bại! Vui lòng thử lại";
 
             public const string ROLE_NOT_FOUND = "không tìm thấy role này";
+
+            public const string USER_NOT_FOUND = "không tìm thấy user này";
         }
 
         public class STATUS_RESPONSE

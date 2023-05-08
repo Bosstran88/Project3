@@ -86,6 +86,9 @@ namespace Project3.Repositories
             return new PageResponse<IPagedList<VBlogPagin>>(pageData, (int)filter.pageNumber, (int)filter.pageSize, total,(int) pageTotal);
         }
 
+
+        //////////////////  SỬA LẠI HÀM PAGIN BLOG 
+
         public Blog getOne(long id)
         {
             var data =  _dbContext.Blogs.Where(r => r.Id == id).First();
