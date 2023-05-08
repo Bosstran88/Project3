@@ -2,5 +2,7 @@
 {
     public interface ICourseService
     {
+        public void test();
     }
+
 }

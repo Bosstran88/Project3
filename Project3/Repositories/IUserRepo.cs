@@ -14,6 +14,12 @@ namespace Project3.Repositories
         string createOrUpdate(User user);
         User getById(string id);
 
+        // Xóa Phần Trên
+        bool UserExistsByUsername(string username);
+        User getById(long id);
+        void AddUser(User user);
+        User getUserByName(string username);
+
     }
 
     public class UserRepo : IUserRepo
@@ -58,6 +64,27 @@ namespace Project3.Repositories
         {
             _context.Users.AddAsync(user);
             _context.SaveChangesAsync();
+        }
+        // XÓa Phần trên
+        public bool UserExistsByUsername(string username)
+        {
+            return _context.Users.Any(u => u.UserName == username);
+        }
+
+        public void AddUser(User user)
+        {
+            _context.Users.AddAsync(user);
+            _context.SaveChangesAsync();
+        }
+
+        public User getById(long id)
+        {
+            return _context.Users.Where(i => i.Id == id).First();
+        }
+
+        public User getUserByName(string username)
+        {
+            return _context.Users.Where(i => i.UserName == username).First();
         }
     }
 }

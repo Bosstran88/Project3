@@ -2,5 +2,6 @@
 {
     public interface IAuthenService
     {
+        // Xóa
     }
 }

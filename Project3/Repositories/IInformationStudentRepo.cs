@@ -9,6 +9,10 @@ namespace Project3.Repositories
         void addOrUpdateInformationStudent(InformationStudent informationStudent);
         void deleteInformationStudent(InformationStudent informationStudent);
         InformationStudent getOne(long id);
+
+        //Xóa cái AddOrUpdate đi
+        void AddInfo(InformationStudent informationStudent);
+        void Uodate(InformationStudent informationStudent);
     }
     public class InformationStudentRepo : IInformationStudentRepo
     {
@@ -46,6 +50,18 @@ namespace Project3.Repositories
             var data = _dbContext.InformationStudents.Where(r => r.Id == id).First();
 
             return data;
+        }
+
+        public void AddInfo(InformationStudent informationStudent)
+        {
+            _dbContext.InformationStudents.Add(informationStudent);
+            _dbContext.SaveChanges();
+        }
+
+        public void Uodate(InformationStudent informationStudent)
+        {
+            _dbContext.InformationStudents.Update(informationStudent);
+            _dbContext.SaveChanges();
         }
     }
 }
