@@ -20,15 +20,15 @@ namespace Project3.Repositories
             _dbContext = dbContext;
         }
 
-        public void addOrUpdateCategoryBlog(CategoryBlog categoryblog)
+        public void addOrUpdateCategoryBlog(CategoryBlog categoryBlog)
         {
-            if (categoryblog.Id == null)
+            if ( categoryBlog.Id == null)
             {
-                _dbContext.CategoryBlogs.Add(categoryblog);
+                _dbContext.CategoryBlogs.Add(categoryBlog);
             }
             else
             {
-                _dbContext.CategoryBlogs.Update(categoryblog);
+                _dbContext.CategoryBlogs.Update(categoryBlog);
             }
             _dbContext.SaveChanges();
         }
