@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿using Project3.Migrations;
+using Project3.Migrations;
 using Project3.Models;
 
 namespace Project3.Repositories
@@ -11,7 +10,7 @@ namespace Project3.Repositories
         void deleteTestFirst(TestFirst testFirst);
         TestFirst getOne(long id);
     }
-    public class TestFirstRepo : ITestFirstRepo 
+    public class TestFirstRepo : ITestFirstRepo
     {
         Project3Context _dbContext;
         public TestFirstRepo(Project3Context dbContext)
@@ -21,7 +20,7 @@ namespace Project3.Repositories
 
         public void addOrUpdateTestFirst(TestFirst testFirst)
         {
-            if(testFirst.Id == null)
+            if (testFirst.Id == null)
             {
                 _dbContext.TestFirsts.Add(testFirst);
             }
@@ -50,11 +49,5 @@ namespace Project3.Repositories
 
             return data;
         }
-=======
-﻿namespace Project3.Repositories
-{
-    public interface ITestFirstRepo
-    {
->>>>>>> cff46de88ecb6444047ba605511d28812d678132
     }
 }
