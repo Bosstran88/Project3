@@ -1,4 +1,4 @@
-using Project3.Migrations;
+﻿using Project3.Migrations;
 using Project3.Models;
 using System.Reflection.Metadata;
 
@@ -49,5 +49,6 @@ namespace Project3.Repositories
 
             return data;
         }
+
     }
 }

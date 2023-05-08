@@ -5,9 +5,6 @@ namespace Project3.Repositories
 {
     public interface IInformationStudentRepo
     {
-        List<InformationStudent> getInformationList();
-        void addOrUpdateInformationStudent(InformationStudent informationStudent);
-        void deleteInformationStudent(InformationStudent informationStudent);
         InformationStudent getOne(long id);
         bool exitByEmail(string email);
         bool IdCardStudent(string idCardStudent);
@@ -49,8 +46,13 @@ namespace Project3.Repositories
         {
             _dbContext.InformationStudents.Update(informationStudent);
             _dbContext.SaveChanges();
+<<<<<<< .mine
         }
 
+=======
+
+
+>>>>>>> .theirs
         public InformationStudent getOne(long id)
         {
             var data = _dbContext.InformationStudents.Where(r => r.Id == id).First();
