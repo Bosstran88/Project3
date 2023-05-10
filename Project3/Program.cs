@@ -41,7 +41,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-
 #region Add Service
 builder.Services.AddScoped<IBlogService , BlogService>();
 builder.Services.AddScoped<ISecurityService, SecurityService>();
@@ -66,7 +65,6 @@ builder.Services.AddScoped<IUserRoleRepo , UserRoleRepo>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<Project3Context>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

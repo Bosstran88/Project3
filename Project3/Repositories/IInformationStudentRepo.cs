@@ -46,7 +46,9 @@ namespace Project3.Repositories
         {
             _dbContext.InformationStudents.Update(informationStudent);
             _dbContext.SaveChanges();
+
         }
+
 
         public InformationStudent getOne(long id)
         {

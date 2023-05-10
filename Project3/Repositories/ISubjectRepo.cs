@@ -14,6 +14,7 @@ namespace Project3.Repositories
 {
     public interface ISubjectRepo
     {
+        List<Subject> GetSubjectList();
         PageResponse<IPagedList<VSubjectPagin>> paginations(SubjectReq filter);
         void addOrUpdateSubjects(Subject subject);
         void DeleteSubject(Subject subject);
@@ -53,28 +54,32 @@ namespace Project3.Repositories
             return data;
         }
 
+        public List<Subject> GetSubjectList()
+        {
+            return _dbContext.Subjects.Where(r => r.IsDelete == 0).ToList();
+        }
+
         public PageResponse<IPagedList<VSubjectPagin>> paginations(SubjectReq filter)
         {
-            var total = _dbContext.Subjects.Where(r => r.IsDelete == 0).Count();
-
-            var check = false;
 
             var param = new List<SqlParameter>();
             StringBuilder data = new StringBuilder("select b.Id,b.SubjectName,b.CoureId,b.CreatedAt from Subjects as b\r\nwhere b.IsDelete = 0 ");
 
             if (!string.IsNullOrEmpty(filter.subjectName))
             {
-                check = true;
+
                 data.Append(" and LOWER(b.subjectName) LIKE '%' + LOWER(@subjectName) + '%' OR b.SubjectName = '' ");
                 param.Add(new SqlParameter("title", SqlDbType.NVarChar) { Value = filter.subjectName });
             }
             if (filter.courseId != null)
             {
-                check = true;
+
                 data.Append(" and b.CourseId = @courseId");
                 param.Add(new SqlParameter("@courseId", SqlDbType.VarChar) { Value = filter.courseId });
             }
-            var query = _dbContext.Set<Subject>().FromSqlRaw(data.ToString(), param.ToArray()).Select(
+            var query = _dbContext.Set<Subject>().FromSqlRaw(data.ToString(), param.ToArray())
+                .OrderBy(r => r.SubjectName).ThenByDescending(r => r.CreatedAt)
+                .Select(
                 r => new VSubjectPagin
                 {
                     Id = r.Id,
@@ -83,14 +88,8 @@ namespace Project3.Repositories
                     CoursesId = r.CoursesId,
                     CreatedAt = r.CreatedAt
                 });
-
-            query.OrderBy(r => r.SubjectName).ThenByDescending(r => r.CreatedAt);
-
-            if (check)
-            {
-                total = query.Count();
-            }
-
+            
+            var total = query.Count();
             var pageData = query.ToPagedList((int)filter.pageNumber, (int)filter.pageSize);
 
             var pageTotal = Math.Round((decimal)total / (int)filter.pageSize);
