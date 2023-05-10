@@ -17,7 +17,7 @@ namespace Project3.Controllers
         }
 
         [HttpPost("createOrUpdate")]
-        public async Task<IActionResult> createOrUpdate([FromBody] AddBlogReq? menuReq)
+        public async Task<IActionResult> createOrUpdate([FromBody] AddInfomationStudentReq? menuReq)
         {
             return Ok(_infoService.createOrUpdate(menuReq));
         }

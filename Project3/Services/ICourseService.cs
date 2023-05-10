@@ -81,5 +81,10 @@ namespace Project3.Services
             };
             return new BaseResponse(format);
         }
+
+        public void test()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
