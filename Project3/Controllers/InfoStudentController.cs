@@ -16,10 +16,10 @@ namespace Project3.Controllers
             _infoService = infoService;
         }
 
-        [HttpPost("createOrUpdate")]
-        public async Task<IActionResult> createOrUpdate([FromBody] AddBlogReq? menuReq)
+        [HttpPost("update")]
+        public async Task<IActionResult> createOrUpdate([FromBody] UpdateInformationStudent? menuReq)
         {
-            return Ok(_infoService.createOrUpdate(menuReq));
+            return Ok(_infoService.UpdateInfo(menuReq));
         }
 
         [HttpGet("getById/{Id}")]
@@ -28,16 +28,16 @@ namespace Project3.Controllers
             return Ok(_infoService.getOne(Id));
         }
 
-        [HttpDelete("deleteById/{menuId}")]
-        public async Task<IActionResult> deleteById(long menuId)
-        {
-            return Ok(_infoService.deleteBlog(menuId));
-        }
+        //[HttpDelete("deleteById/{menuId}")]
+        //public async Task<IActionResult> deleteById(long menuId)
+        //{
+        //    return Ok(_infoService.UpdateInfo());
+        //}
 
         [HttpPost("search")]
         public async Task<IActionResult> search([FromBody] BlogReq filter)
         {
-            return Ok(_infoService.getPagin(filter));
+            return Ok(_infoService.getPagin());
         }
     }
 }

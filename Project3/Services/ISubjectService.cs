@@ -10,7 +10,7 @@ namespace Project3.Services
     public interface ISubjectService
     {
         BaseResponse getOne(long id);
-        BaseResponse getPagin(AddSubjectReq filter);
+        BaseResponse getPagin(SubjectReq filter);
         BaseResponse deleteSubject(long id);
         BaseResponse createOrUpdate(AddSubjectReq subjectReq);
     }
@@ -88,7 +88,7 @@ namespace Project3.Services
             return new BaseResponse(format);
         }
 
-        public BaseResponse getPagin(AddSubjectReq filter)
+        public BaseResponse getPagin(SubjectReq filter)
         {
             var data = _subjectRepo.paginations(filter);
             return new BaseResponse(data);

@@ -1,11 +1,12 @@
-﻿using Project3.Entity.Response;
+﻿using Project3.Entity.Request;
+using Project3.Entity.Response;
 using Project3.Repositories;
 
 namespace Project3.Services
 {
     public interface IInformationStudentService
     {
-        BaseResponse UpdateInfo();
+        BaseResponse UpdateInfo(UpdateInformationStudent req);
         BaseResponse getOne(long id);
         BaseResponse getPagin();
     }
@@ -18,7 +19,7 @@ namespace Project3.Services
             inforRepo = _inforRepo;
         }
 
-        public BaseResponse UpdateInfo()
+        public BaseResponse UpdateInfo(UpdateInformationStudent req)
         {
             return new BaseResponse();
         }
