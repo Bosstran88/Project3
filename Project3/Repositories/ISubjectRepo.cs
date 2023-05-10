@@ -61,16 +61,19 @@ namespace Project3.Repositories
 
         public PageResponse<IPagedList<VSubjectPagin>> paginations(SubjectReq filter)
         {
+
             var param = new List<SqlParameter>();
             StringBuilder data = new StringBuilder("select b.Id,b.SubjectName,b.CoureId,b.CreatedAt from Subjects as b\r\nwhere b.IsDelete = 0 ");
 
             if (!string.IsNullOrEmpty(filter.subjectName))
             {
+
                 data.Append(" and LOWER(b.subjectName) LIKE '%' + LOWER(@subjectName) + '%' OR b.SubjectName = '' ");
                 param.Add(new SqlParameter("title", SqlDbType.NVarChar) { Value = filter.subjectName });
             }
             if (filter.courseId != null)
             {
+
                 data.Append(" and b.CourseId = @courseId");
                 param.Add(new SqlParameter("@courseId", SqlDbType.VarChar) { Value = filter.courseId });
             }
@@ -86,6 +89,7 @@ namespace Project3.Repositories
                 });
 
             query.OrderBy(r => r.SubjectName).ThenByDescending(r => r.CreatedAt);
+
 
             var total = query.Count();
             var pageData = query.ToPagedList((int)filter.pageNumber, (int)filter.pageSize);
