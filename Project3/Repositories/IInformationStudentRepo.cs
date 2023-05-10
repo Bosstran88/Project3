@@ -46,13 +46,8 @@ namespace Project3.Repositories
         {
             _dbContext.InformationStudents.Update(informationStudent);
             _dbContext.SaveChanges();
-<<<<<<< .mine
         }
 
-=======
-
-
->>>>>>> .theirs
         public InformationStudent getOne(long id)
         {
             var data = _dbContext.InformationStudents.Where(r => r.Id == id).First();

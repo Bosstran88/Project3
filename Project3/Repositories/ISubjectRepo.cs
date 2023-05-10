@@ -14,8 +14,7 @@ namespace Project3.Repositories
 {
     public interface ISubjectRepo
     {
-        List<Subject> getSubjectList();
-        PageResponse<PagedList.IPagedList<VSubjectPagin>> paginations(SubjectRepo filter);
+        PageResponse<IPagedList<VSubjectPagin>> paginations(SubjectReq filter);
         void addOrUpdateSubjects(Subject subject);
         void DeleteSubject(Subject subject);
         Subject getOne(long id);
@@ -52,11 +51,6 @@ namespace Project3.Repositories
             var data = _dbContext.Subjects.Where(r => r.Id == id).First();
 
             return data;
-        }
-
-        public List<Subject> getSubjectList()
-        {
-            return _dbContext.Subjects.Where(r => r.Id == 0).ToList();
         }
 
         public PageResponse<IPagedList<VSubjectPagin>> paginations(SubjectReq filter)
