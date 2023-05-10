@@ -78,6 +78,7 @@ namespace Project3.Repositories
                 param.Add(new SqlParameter("@courseId", SqlDbType.VarChar) { Value = filter.courseId });
             }
             var query = _dbContext.Set<Subject>().FromSqlRaw(data.ToString(), param.ToArray())
+                .OrderBy(r => r.SubjectName).ThenByDescending(r => r.CreatedAt)
                 .Select(
                 r => new VSubjectPagin
                 {
@@ -87,10 +88,7 @@ namespace Project3.Repositories
                     CoursesId = r.CoursesId,
                     CreatedAt = r.CreatedAt
                 });
-
-            query.OrderBy(r => r.SubjectName).ThenByDescending(r => r.CreatedAt);
-
-
+            
             var total = query.Count();
             var pageData = query.ToPagedList((int)filter.pageNumber, (int)filter.pageSize);
 
