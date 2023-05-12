@@ -16,7 +16,6 @@ namespace Project3.Services
     public class CourseService : ICourseService
     {
         ICourseRepo _courseRepo;
-        Course course;
         public CourseService(ICourseRepo courseRepo)
         {
             _courseRepo = courseRepo;
@@ -24,31 +23,37 @@ namespace Project3.Services
 
         public BaseResponse createOrUpdate(AddCourseReq course)
         {
+            Course cour;
             if(course.Id == null)
             {
-                this.course = new Course();
-                this.course.CoursesName = course.CoursesName;
-                this.course.TotalTime = course.TotalTime;
+                if (_courseRepo.exitByNameCourse(course.CoursesName))
+                {
+                    throw new ValidateException(MESSAGE.VALIDATE.INPUT_INVALID);
+                }
+                cour = new Course();
+                cour.CoursesName = course.CoursesName;
+                cour.TotalTime = course.TotalTime;
+                cour.CreatedAt = DateTime.Now;
             }
             else
             {
-                this.course = _courseRepo.getOne((long)course.Id);
-                if(this.course == null)
+                cour = _courseRepo.getOne((long)course.Id);
+                if(cour == null)
                 {
                     throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
                 }
-                this.course.UpdateAt = DateTime.Now;
+                if(!string.Equals(cour.CoursesName,course.CoursesName))
+                {
+                    if (_courseRepo.exitByNameCourse(course.CoursesName))
+                    {
+                        throw new ValidateException(MESSAGE.VALIDATE.INPUT_INVALID);
+                    }
+                }
+                cour.UpdateAt = DateTime.Now;
             }
-            convertFromDtoToModel(course);
-            _courseRepo.addOrUpdateCourseRepo(this.course);
+           
+            _courseRepo.addOrUpdateCourseRepo(cour);
             return new BaseResponse();
-        }
-
-        private void convertFromDtoToModel(AddCourseReq courses)
-        {
-            course.CoursesName = courses.CoursesName;
-            course.TotalTime = courses.TotalTime;
-            course.CreatedId = courses.CreatedId;
         }
 
         public BaseResponse deleteCourse(long id)
@@ -75,7 +80,6 @@ namespace Project3.Services
                 Id = data.Id,
                 CoursesName = data.CoursesName,
                 TotalTime = data.TotalTime,
-                CreatedId = data.CreatedId,
                 CreatedAt = data.CreatedAt
             };
             return new BaseResponse(format);

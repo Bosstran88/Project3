@@ -10,6 +10,7 @@ namespace Project3.Repositories
         void addOrUpdateCourseRepo(Course course);
         void deleteCourseRepo(Course course);
         Course getOne(long id);
+        bool exitByNameCourse(string nameCourse);
     }
     public class CourseRepo : ICourseRepo
     {
@@ -36,6 +37,11 @@ namespace Project3.Repositories
         {
             _dbContext.Courses.Update(course);
             _dbContext.SaveChanges();
+        }
+
+        public bool exitByNameCourse(string nameCourse)
+        {
+            return _dbContext.Courses.Any(r => r.CoursesName == nameCourse);    
         }
 
         public List<Course> GetCourseList()

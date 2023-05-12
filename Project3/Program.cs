@@ -56,7 +56,6 @@ builder.Services.AddScoped<ICourseRepo , CourseRepo>();
 builder.Services.AddScoped<IInformationStudentRepo , InformationStudentRepo>();
 builder.Services.AddScoped<IRoleRepo, RoleRepo>();  
 builder.Services.AddScoped<ISubjectRepo , SubjectRepo>();
-builder.Services.AddScoped<ITestFirstRepo , TestFirstRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IUserRoleRepo , UserRoleRepo>();
 #endregion

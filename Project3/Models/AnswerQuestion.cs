@@ -1,11 +1,23 @@
-﻿namespace Project3.Models
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Project3.Models;
+public partial class AnswerQuestion
 {
-    public partial class AnswerQuestion
-    {
-        public long Id { get; set; }
-        public long? QuestionId { get; set; }
-        public string? AnswerQuestions { get; set; }
-        public int? Score { get; set; }
-        public virtual Question? Questions { get; set; }
-    }
+    public long Id { get; set; }
+
+    public long? QuestionId { get; set; }
+
+    public string? AnswerQuestion1 { get; set; }
+
+    public int? Score { get; set; }
+
+    public int? IsDelete { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdateAt { get; set; }
+
+    public virtual Question? Question { get; set; }
 }

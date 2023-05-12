@@ -3,7 +3,6 @@ using PagedList;
 using Project3.Entity.Response;
 using Project3.Migrations;
 using Project3.Models;
-using System.Text;
 
 namespace Project3.Repositories
 {

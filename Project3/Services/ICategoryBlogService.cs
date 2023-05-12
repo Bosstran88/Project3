@@ -75,7 +75,6 @@ namespace Project3.Services
                 Id = data.Id,
                 CategoryName = data.CategoryName,
                 Description = data.Description,
-                CreatedId = data.CreatedId,
                 CreatedAt = data.CreatedAt
             };
             return new BaseResponse(format);
