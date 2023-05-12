@@ -14,59 +14,69 @@ namespace Project3.Services
         BaseResponse getOne(long id);
         BaseResponse getPagin(RoleReq roleReq);
     }
-    public class RoleService  : IRoleService
+    public class RoleService : IRoleService
     {
-        Role role;
         IRoleRepo roleRepo;
-        public RoleService(IRoleRepo _roleRepo) 
+        public RoleService(IRoleRepo _roleRepo)
         {
             roleRepo = _roleRepo;
         }
 
         public BaseResponse createOrUpdate(AddRoleReq addRole)
         {
-            if(addRole.Id == null)
+            Role role;
+            if (addRole.Id == null)
             {
-                this.role = new Role();
-                this.role.IsDelete = Constants.IsDelete.False;
-                this.role.CreateAt = DateTime.Now;
+                if (roleRepo.exitRoleName(addRole.RoleName))
+                {
+                    throw new ValidateException(MESSAGE.VALIDATE.INPUT_INVALID);
+                }
+                role = new Role
+                {
+                    NameRole = addRole.RoleName,
+                    IsDelete = Constants.IsDelete.False,
+                    CreatedAt = DateTime.Now,
+                };
+                roleRepo.create(role);
             }
             else
             {
-                this.role = roleRepo.GetRoleById((long)addRole.Id);
-                if(this.role == null)
+                role = roleRepo.GetRoleById((long)addRole.Id);
+                if (role == null)
                 {
                     throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
                 }
-                this.role.UpdateAt = DateTime.Now;
+                if (!string.Equals(addRole.RoleName, role.NameRole))
+                {
+                    if (roleRepo.exitRoleName(addRole.RoleName))
+                    {
+                        throw new ValidateException(MESSAGE.VALIDATE.INPUT_INVALID);
+                    }
+                }
+                role.NameRole = addRole.RoleName;
+                role.UpdateAt = DateTime.Now;
+                roleRepo.update(role);
             }
-            convertFromDtoToModel(addRole);
-            roleRepo.createOrUpdate(this.role);
             return new BaseResponse();
-        }
-
-        private void convertFromDtoToModel(AddRoleReq addRole)
-        {
-            this.role.NameRole = addRole.RoleName;
         }
 
         public BaseResponse deleteById(long id)
         {
             var data = roleRepo.GetRoleById(id);
-            if(data == null)
+            if (data == null)
             {
                 throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
             }
             data.IsDelete = 1;
             data.UpdateAt = DateTime.Now;
-            roleRepo.deleteRole(role);
+            roleRepo.deleteRole(data);
             return new BaseResponse();
         }
 
         public BaseResponse getOne(long id)
         {
             var data = roleRepo.GetRoleById(id);
-            if(data == null)
+            if (data == null)
             {
                 return new BaseResponse();
             }
@@ -79,7 +89,7 @@ namespace Project3.Services
 
         public BaseResponse getPagin(RoleReq roleReq)
         {
-            return new BaseResponse(roleRepo.paginations(roleReq)); 
+            return new BaseResponse(roleRepo.paginations(roleReq));
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace Project3.Models;
 
 public partial class Subject
@@ -15,11 +17,7 @@ public partial class Subject
 
     public long? CoursesId { get; set; }
 
-    public long? CreatedId { get; set; }
-
     public DateTime? CreatedAt { get; set; }
-
-    public long? UpdateId { get; set; }
 
     public DateTime? UpdateAt { get; set; }
 

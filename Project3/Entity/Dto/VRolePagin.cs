@@ -4,6 +4,5 @@
     {
         public long Id { get; set; }
         public string? NameRole { get; set; }
-        public DateTime? CreatedDate { get; set; }
     }
 }

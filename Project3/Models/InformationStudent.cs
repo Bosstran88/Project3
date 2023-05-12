@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace Project3.Models;
 
 public partial class InformationStudent
@@ -15,11 +17,11 @@ public partial class InformationStudent
 
     public string? IdentityCard { get; set; }
 
-    public string? Email { get; set; }
-
     public DateTime? StartCard { get; set; }
 
     public DateTime? EndCard { get; set; }
+
+    public int? IsDelete { get; set; }
 
     public string? FromCard { get; set; }
 
@@ -29,7 +31,7 @@ public partial class InformationStudent
 
     public string? Status { get; set; }
 
-    public virtual User IdNavigation { get; set; } = null!;
+    public string? Email { get; set; }
 
-    public virtual ICollection<TestFirst> TestFirsts { get; set; } = new List<TestFirst>();
+    public virtual ICollection<HistoryExam> HistoryExams { get; set; } 
 }

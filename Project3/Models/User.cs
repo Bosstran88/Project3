@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace Project3.Models;
 
 public partial class User
@@ -17,11 +19,9 @@ public partial class User
 
     public DateTime? UpdateAt { get; set; }
 
-    public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();
-
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public virtual ICollection<Blog> Blogs { get; set; } 
 
     public virtual InformationStudent? InformationStudent { get; set; }
 
-    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public virtual ICollection<UserRole> UserRoles { get; set; }
 }

@@ -8,9 +8,6 @@
 
         public int? TotalTime { get; set; }
 
-
-        public long? CreatedId { get; set; }
-
         public DateTime? CreatedAt { get; set; }
     }
 }

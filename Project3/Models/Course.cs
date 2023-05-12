@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 
 namespace Project3.Models;
 
@@ -12,13 +13,13 @@ public partial class Course
 
     public int? IsSale { get; set; }
 
-    public long? CreatedId { get; set; }
+    public string? Level { get; set; }
+
+    public int? IsDelete { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 
-    public long? UpdateId { get; set; }
-
     public DateTime? UpdateAt { get; set; }
 
-    public virtual ICollection<Subject> Subjects { get; set; } = new List<Subject>();
+    public virtual ICollection<Subject> Subjects { get; set; }
 }
