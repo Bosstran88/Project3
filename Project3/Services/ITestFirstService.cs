@@ -39,8 +39,16 @@ namespace Project3.Services
                     throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
                 }
             }
+            convertFromDtoToModel(testFirstReq);
             _testFirstRepo.addOrUpdateTestFirst(this.testFirst);
             return new BaseResponse();
+        }
+
+        private void convertFromDtoToModel(AddTestFirstReq testFirsts)
+        {
+            testFirst.NameTest = testFirsts.NameTest;
+            testFirst.ScoreTest = testFirsts.ScoreTest;
+            testFirst.CreatedAt = testFirsts.CreatedAt;
         }
 
         public BaseResponse deleteTestFirst(long id)

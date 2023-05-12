@@ -49,7 +49,6 @@ namespace Project3.Services
 
         private void convertFromDtoToModel(AddBlogReq blogs) 
         {
-            blog.Id = (long)blogs.Id;
             blog.Title = blogs.Title;
             blog.Summay = blogs.Summay;
             blog.UsersId = blogs.UsersId;

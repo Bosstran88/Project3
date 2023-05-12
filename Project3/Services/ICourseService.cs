@@ -46,9 +46,9 @@ namespace Project3.Services
 
         private void convertFromDtoToModel(AddCourseReq courses)
         {
-            course.Id = (long)courses.Id;
             course.CoursesName = courses.CoursesName;
             course.TotalTime = courses.TotalTime;
+            course.CreatedId = courses.CreatedId;
         }
 
         public BaseResponse deleteCourse(long id)
@@ -79,11 +79,6 @@ namespace Project3.Services
                 CreatedAt = data.CreatedAt
             };
             return new BaseResponse(format);
-        }
-
-        public void test()
-        {
-            throw new NotImplementedException();
         }
     }
 }

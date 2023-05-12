@@ -31,6 +31,14 @@ public partial class Project3Context : DbContext
     public virtual DbSet<Subject> Subjects { get; set; }
 
     public virtual DbSet<TestFirst> TestFirsts { get; set; }
+    public virtual DbSet<Exam> Exams { get; set; }
+    public virtual DbSet<HistoryExam> HistoryExams { get; set; }
+
+    public virtual DbSet<Question> Questions { get; set; }
+
+    public virtual DbSet<AnswerQuestion> AnswerQuestions { get; set; }
+
+    public virtual DbSet<AnswerQuestionChose> AnswerQuestionChoses { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 

@@ -46,7 +46,6 @@ namespace Project3.Services
         }
         private void convertFromDtoToModel(AddCategoryBlog categories)
         {
-            categoryBlog.Id = (long)categories.Id;
             categoryBlog.CategoryName = categories.CategoryName;
             categoryBlog.Description = categories.Description;
 
