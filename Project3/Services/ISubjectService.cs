@@ -28,6 +28,10 @@ namespace Project3.Services
         {
             if(subjectReq.Id == null)
             {
+                if (_subjectRepo.exitByNameCSubject(subjectReq.SubjectName))
+                {
+                    throw new ValidateException(MESSAGE.VALIDATE.INPUT_INVALID);
+                }
                 this.subject = new Subject();
                 this.subject.IsDelete = Constants.IsDelete.False;
                 this.subject.CreatedAt = DateTime.Now;
@@ -38,6 +42,13 @@ namespace Project3.Services
                 if(this.subject == null)
                 {
                     throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
+                }
+                if (!string.Equals(this.subject.SubjectName, subjectReq.SubjectName))
+                {
+                    if (_subjectRepo.exitByNameCSubject(subjectReq.SubjectName))
+                    {
+                        throw new ValidateException(MESSAGE.VALIDATE.INPUT_INVALID);
+                    }
                 }
                 this.subject.UpdateAt = DateTime.Now;
             }

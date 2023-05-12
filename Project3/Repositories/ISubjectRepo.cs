@@ -19,6 +19,7 @@ namespace Project3.Repositories
         void addOrUpdateSubjects(Subject subject);
         void DeleteSubject(Subject subject);
         Subject getOne(long id);
+        bool exitByNameCSubject(string nameSubject);
     }
     public class SubjectRepo : ISubjectRepo
     {
@@ -45,6 +46,11 @@ namespace Project3.Repositories
         {
             _dbContext.Subjects.Update(subject);
             _dbContext.SaveChanges();
+        }
+
+        public bool exitByNameCSubject(string nameSubject)
+        {
+            return _dbContext.Subjects.Any(r => r.SubjectName == nameSubject);
         }
 
         public Subject getOne(long id)

@@ -12,6 +12,7 @@ namespace Project3.Repositories
         //Xóa cái AddOrUpdate đi
         void AddInfo(InformationStudent informationStudent);
         void UpdateInfo(InformationStudent informationStudent);
+        bool exitEmail(string Email);
     }
     public class InformationStudentRepo : IInformationStudentRepo
     {
@@ -71,6 +72,11 @@ namespace Project3.Repositories
         public bool IdCardStudent(string idCardStudent)
         {
             return _dbContext.InformationStudents.Any(r => r.IdCardStudent == idCardStudent);
+        }
+
+        public bool exitEmail(string Email)
+        {
+            return _dbContext.InformationStudents.Any(r => r.Email == Email);
         }
     }
 }

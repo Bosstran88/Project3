@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Project3.Models;
 
-public partial class CategoryBlog
+public partial class Exam
 {
     public long Id { get; set; }
 
-    public string? CategoryName { get; set; }
+    public string? NameExam { get; set; }
 
-    public string? Description { get; set; }
+    public int? LimitTime { get; set; }
 
     public int? IsDelete { get; set; }
 
@@ -17,5 +17,5 @@ public partial class CategoryBlog
 
     public DateTime? UpdateAt { get; set; }
 
-    public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();
+    public virtual ICollection<Question> Questions { get; set; } 
 }

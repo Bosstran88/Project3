@@ -15,10 +15,11 @@ namespace Project3.Repositories
     {
         PageResponse<IPagedList<VRolePagin>> paginations(RoleReq roleReq);
         IEnumerable<VRolePagin> getAllRole();
-        void createOrUpdate(Role role);
+        void create(Role role);
+        void update(Role role);
         Role GetRoleById(long id);
         Role FindByName(string roleName);
-        void deleteRole(Role role);
+        bool exitRoleName(string roleName);
     }
 
     public class RoleRepo : IRoleRepo
@@ -41,8 +42,7 @@ namespace Project3.Repositories
             new VRolePagin
             {
                 Id = r.Id,
-                NameRole = r.NameRole,
-                CreatedDate = r.CreateAt
+                NameRole = r.NameRole
             });
         }
 
@@ -63,12 +63,11 @@ namespace Project3.Repositories
             }
 
             var query = _context.Set<Role>().FromSqlRaw(data.ToString())
-                .OrderBy(r => r.NameRole).ThenByDescending(r => r.CreateAt)
+                .OrderBy(r => r.NameRole)
                 .Select(r => new VRolePagin
                 {
                     Id = r.Id,
-                    NameRole = r.NameRole,
-                    CreatedDate = r.CreateAt
+                    NameRole = r.NameRole
                 });
 
             var total = query.Count();
@@ -80,23 +79,21 @@ namespace Project3.Repositories
             return new PageResponse<IPagedList<VRolePagin>>(pageData, (int)roleReq.pageNumber, (int)roleReq.pageSize, total, (int)pageTotal);
         }
 
-        public void createOrUpdate(Role role)
+        public void create(Role role)
         {
-            if(role.Id == null)
-            {
-                _context.Roles.Add(role);
-            }
-            else
-            {
-                _context.Roles.Update(role);
-            }
+            _context.Roles.Add(role);   
             _context.SaveChanges();
         }
 
-        public void deleteRole(Role role)
+        public void update(Role role) 
         {
             _context.Roles.Update(role);
             _context.SaveChanges();
+        }
+
+        public bool exitRoleName(string roleName)
+        {
+            return _context.Roles.Any(r =>r.NameRole ==  roleName);
         }
     }
 }
