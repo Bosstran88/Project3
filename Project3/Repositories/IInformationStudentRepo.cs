@@ -5,10 +5,14 @@ namespace Project3.Repositories
 {
     public interface IInformationStudentRepo
     {
-        List<InformationStudent> getInformationList();
-        void addOrUpdateInformationStudent(InformationStudent informationStudent);
-        void deleteInformationStudent(InformationStudent informationStudent);
         InformationStudent getOne(long id);
+        bool exitByEmail(string email);
+        bool IdCardStudent(string idCardStudent);
+
+        //Xóa cái AddOrUpdate đi
+        void AddInfo(InformationStudent informationStudent);
+        void UpdateInfo(InformationStudent informationStudent);
+        bool exitEmail(string Email);
     }
     public class InformationStudentRepo : IInformationStudentRepo
     {
@@ -22,6 +26,10 @@ namespace Project3.Repositories
             return _dbContext.InformationStudents.Where(r => r.Id == 0).ToList();
         }
 
+        public void deleteInformationStudent(InformationStudent informationStudent)
+        {
+            throw new NotImplementedException();
+        }
         public void addOrUpdateInformationStudent(InformationStudent informationStudent)
         {
             if (informationStudent.Id == null)
@@ -35,17 +43,40 @@ namespace Project3.Repositories
             _dbContext.SaveChanges();
         }
 
-        public void deleteInformationStudent(InformationStudent informationStudent)
+        public void UpdateInfo(InformationStudent informationStudent)
         {
             _dbContext.InformationStudents.Update(informationStudent);
             _dbContext.SaveChanges();
+
         }
+
 
         public InformationStudent getOne(long id)
         {
             var data = _dbContext.InformationStudents.Where(r => r.Id == id).First();
 
             return data;
+        }
+
+        public void AddInfo(InformationStudent informationStudent)
+        {
+            _dbContext.InformationStudents.Add(informationStudent);
+            _dbContext.SaveChanges();
+        }
+
+        public bool exitByEmail(string email)
+        {
+            return _dbContext.InformationStudents.Any(r => r.Email == email);
+        }
+
+        public bool IdCardStudent(string idCardStudent)
+        {
+            return _dbContext.InformationStudents.Any(r => r.IdCardStudent == idCardStudent);
+        }
+
+        public bool exitEmail(string Email)
+        {
+            return _dbContext.InformationStudents.Any(r => r.Email == Email);
         }
     }
 }

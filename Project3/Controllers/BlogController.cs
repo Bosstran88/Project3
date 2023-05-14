@@ -22,13 +22,13 @@ namespace Project3.Controllers
         }
 
         [HttpGet("getById/{Id}")]
-        public async Task<IActionResult> getById(float Id)
+        public async Task<IActionResult> getById(long Id)
         {
             return Ok(_blogService.getOne(Id));
         }
 
         [HttpDelete("deleteById/{menuId}")]
-        public async Task<IActionResult> deleteById(float menuId)
+        public async Task<IActionResult> deleteById(long menuId)
         {
             return Ok(_blogService.deleteBlog(menuId));
         }

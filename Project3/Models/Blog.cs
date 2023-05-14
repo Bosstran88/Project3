@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace Project3.Models;
 
 public partial class Blog
@@ -20,8 +22,6 @@ public partial class Blog
     public DateTime? UpdateAt { get; set; }
 
     public virtual CategoryBlog? Category { get; set; }
-
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual User? Users { get; set; }
 }

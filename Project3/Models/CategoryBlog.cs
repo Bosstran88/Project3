@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 
 namespace Project3.Models;
 
@@ -10,13 +11,11 @@ public partial class CategoryBlog
 
     public string? Description { get; set; }
 
-    public long? CreatedId { get; set; }
+    public int? IsDelete { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 
-    public long? UpdateId { get; set; }
-
     public DateTime? UpdateAt { get; set; }
 
-    public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();
+    public virtual ICollection<Blog> Blogs { get; set; }
 }

@@ -16,13 +16,16 @@ public partial class Project3Context : DbContext
     {
     }
 
+
     public virtual DbSet<Blog> Blogs { get; set; }
 
     public virtual DbSet<CategoryBlog> CategoryBlogs { get; set; }
 
-    public virtual DbSet<Comment> Comments { get; set; }
-
     public virtual DbSet<Course> Courses { get; set; }
+
+    public virtual DbSet<Exam> Exams { get; set; }
+
+    public virtual DbSet<HistoryExam> HistoryExams { get; set; }
 
     public virtual DbSet<InformationStudent> InformationStudents { get; set; }
 
@@ -30,7 +33,11 @@ public partial class Project3Context : DbContext
 
     public virtual DbSet<Subject> Subjects { get; set; }
 
-    public virtual DbSet<TestFirst> TestFirsts { get; set; }
+    public virtual DbSet<Question> Questions { get; set; }
+
+    public virtual DbSet<AnswerQuestion> AnswerQuestions { get; set; }
+
+    public virtual DbSet<AnswerQuestionChose> AnswerQuestionChoses { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -42,131 +49,169 @@ public partial class Project3Context : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AnswerQuestion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC0736855471");
+
+            entity.ToTable("AnswerQuestion");
+
+            entity.Property(e => e.AnswerQuestion1)
+                .HasMaxLength(2000)
+                .HasColumnName("AnswerQuestion");
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Question).WithMany(p => p.AnswerQuestions)
+                .HasForeignKey(d => d.QuestionId)
+                .HasConstraintName("FK__AnswerQue__Quest__72C60C4A");
+        });
+
+        modelBuilder.Entity<AnswerQuestionChose>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07A686C864");
+
+            entity.ToTable("AnswerQuestionChose");
+
+            entity.Property(e => e.AnswerChose).HasMaxLength(2000);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.HistoryExam).WithMany(p => p.AnswerQuestionChoses)
+                .HasForeignKey(d => d.HistoryExamId)
+                .HasConstraintName("FK__AnswerQue__Histo__6FE99F9F");
+        });
+
         modelBuilder.Entity<Blog>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Blogs__3214EC073867579D");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC0764C28E1E");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Summay).HasColumnType("text");
-            entity.Property(e => e.Title).HasMaxLength(200);
+            entity.Property(e => e.Title).HasMaxLength(2000);
             entity.Property(e => e.UpdateAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Blogs)
                 .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK__Blogs__CategoryI__48CFD27E");
+                .HasConstraintName("FK__Blogs__CategoryI__66603565");
 
             entity.HasOne(d => d.Users).WithMany(p => p.Blogs)
                 .HasForeignKey(d => d.UsersId)
-                .HasConstraintName("FK__Blogs__UsersId__4AB81AF0");
+                .HasConstraintName("FK__Blogs__UsersId__00200768");
         });
 
         modelBuilder.Entity<CategoryBlog>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC076EEA7CE6");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC0723228CA6");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.CategoryName).HasMaxLength(100);
+            entity.Property(e => e.CategoryName).HasMaxLength(200);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.Description).HasMaxLength(200);
+            entity.Property(e => e.Description).HasMaxLength(1000);
             entity.Property(e => e.UpdateAt).HasColumnType("datetime");
-        });
-
-        modelBuilder.Entity<Comment>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__COMMENTS__3214EC07EC00F884");
-
-            entity.ToTable("COMMENTS");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.CommentDate).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Blog).WithMany(p => p.Comments)
-                .HasForeignKey(d => d.BlogId)
-                .HasConstraintName("FK__COMMENTS__BlogId__4D94879B");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Comments)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__COMMENTS__UserId__4E88ABD4");
         });
 
         modelBuilder.Entity<Course>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Courses__3214EC073F94300C");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07DF34C5F0");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.CoursesName).HasMaxLength(250);
+            entity.Property(e => e.CoursesName).HasMaxLength(200);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Level)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("level");
             entity.Property(e => e.UpdateAt).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Exam>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07A904A0C2");
+
+            entity.ToTable("Exam");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.NameExam).HasMaxLength(150);
+            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<HistoryExam>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC076C5BB604");
+
+            entity.ToTable("HistoryExam");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.EndTime).HasColumnType("datetime");
+            entity.Property(e => e.StartTime).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Exam).WithMany(p => p.HistoryExams)
+                .HasForeignKey(d => d.ExamId)
+                .HasConstraintName("FK__HistoryEx__ExamI__6EF57B66");
         });
 
         modelBuilder.Entity<InformationStudent>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Informat__3214EC07EE07DB44");
+            entity.HasKey(e => e.Id).HasName("PK__Informat__3214EC07A9EBF0A5");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DateBirth).HasColumnType("datetime");
-            entity.Property(e => e.Email).HasMaxLength(200);
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .IsUnicode(false);
             entity.Property(e => e.EndCard).HasColumnType("datetime");
-            entity.Property(e => e.FromCard).HasMaxLength(250);
+            entity.Property(e => e.FromCard).HasMaxLength(200);
             entity.Property(e => e.FullName).HasMaxLength(100);
             entity.Property(e => e.IdCardStudent).HasMaxLength(255);
             entity.Property(e => e.IdentityCard).HasMaxLength(255);
             entity.Property(e => e.StartCard).HasColumnType("datetime");
             entity.Property(e => e.Status).HasMaxLength(255);
             entity.Property(e => e.UpdateAt).HasColumnType("datetime");
-            entity.Property(e => e.WasBorn).HasMaxLength(255);
+            entity.Property(e => e.WasBorn).HasMaxLength(200);
+        });
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.InformationStudent)
-                .HasForeignKey<InformationStudent>(d => d.Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__InformationS__Id__49C3F6B7");
+        modelBuilder.Entity<Question>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC079E10C081");
+
+            entity.ToTable("Question");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.NameQuestion).HasMaxLength(2000);
+            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Exam).WithMany(p => p.Questions)
+                .HasForeignKey(d => d.ExamId)
+                .HasConstraintName("FK__Question__ExamId__73BA3083");
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC07897F0D52");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07C65539F8");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.NameRole).HasMaxLength(255);
+            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Subject>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Subjects__3214EC07C039428F");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07AF73DF47");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Price)
                 .HasColumnType("decimal(18, 0)")
                 .HasColumnName("price");
-            entity.Property(e => e.SubjectName).HasMaxLength(100);
+            entity.Property(e => e.SubjectName).HasMaxLength(200);
             entity.Property(e => e.UpdateAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Courses).WithMany(p => p.Subjects)
                 .HasForeignKey(d => d.CoursesId)
-                .HasConstraintName("FK__Subjects__Course__4CA06362");
-        });
-
-        modelBuilder.Entity<TestFirst>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__TestFirs__3214EC0716BD79AC");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.NameTest).HasMaxLength(200);
-
-            entity.HasOne(d => d.InfoStudent).WithMany(p => p.TestFirsts)
-                .HasForeignKey(d => d.InfoStudentId)
-                .HasConstraintName("FK__TestFirst__InfoS__4BAC3F29");
+                .HasConstraintName("FK__Subjects__Course__797309D9");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07A50A81B9");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC0788589BFD");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.UpdateAt).HasColumnType("datetime");
             entity.Property(e => e.UserName).HasMaxLength(100);
@@ -174,19 +219,17 @@ public partial class Project3Context : DbContext
 
         modelBuilder.Entity<UserRole>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserRole__3214EC0764838BB8");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07293B4BA9");
 
             entity.ToTable("UserRole");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
-
             entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
                 .HasForeignKey(d => d.RoleId)
-                .HasConstraintName("FK__UserRole__RoleId__5070F446");
+                .HasConstraintName("FK__UserRole__RoleId__7D439ABD");
 
             entity.HasOne(d => d.User).WithMany(p => p.UserRoles)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__UserRole__UserId__4F7CD00D");
+                .HasConstraintName("FK__UserRole__UserId__02084FDA");
         });
 
         OnModelCreatingPartial(modelBuilder);

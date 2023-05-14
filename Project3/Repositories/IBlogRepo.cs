@@ -44,26 +44,23 @@ namespace Project3.Repositories
 
         public PageResponse<IPagedList<VBlogPagin>> paginations(BlogReq filter)
         {
-            var total = _dbContext.Blogs.Where(r => r.IsDelete == 0).Count();
-
-            var check = false;
-
             var param = new List<SqlParameter>();
             StringBuilder data = new StringBuilder("select b.Id,b.Title,b.CategoryId,b.CreatedAt from Blogs as b\r\nwhere b.IsDelete = 0 ");
 
             if(!string.IsNullOrEmpty(filter.title))
             {
-                check = true;
                 data.Append(" and LOWER(b.Title) LIKE '%' + LOWER(@title) + '%' OR b.Title = '' ");
                 param.Add(new SqlParameter("title",SqlDbType.NVarChar ) { Value = filter.title});
             }
             if(filter.categoryId != null)
             {
-                check = true;
+                
                 data.Append(" and b.CategoryId = @categoryId");
                 param.Add(new SqlParameter("@categoryId", SqlDbType.VarChar) { Value = filter.categoryId });
             }
-            var query = _dbContext.Set<Blog>().FromSqlRaw(data.ToString() , param.ToArray()).Select(
+            var query = _dbContext.Set<Blog>().FromSqlRaw(data.ToString() , param.ToArray())
+                .OrderBy(r => r.Title).ThenByDescending(r => r.CreatedAt)
+                .Select(
                 r => new VBlogPagin
                 {
                     Id = r.Id,
@@ -72,12 +69,7 @@ namespace Project3.Repositories
                     CreateAt = r.CreatedAt
                 });
 
-            query.OrderBy(r => r.Title).ThenByDescending(r => r.CreateAt);
-
-            if (check)
-            {
-                total = query.Count();
-            }
+            var total = query.Count();
 
             var pageData = query.ToPagedList((int)filter.pageNumber, (int)filter.pageSize);
 
@@ -85,6 +77,9 @@ namespace Project3.Repositories
 
             return new PageResponse<IPagedList<VBlogPagin>>(pageData, (int)filter.pageNumber, (int)filter.pageSize, total,(int) pageTotal);
         }
+
+
+        //////////////////  SỬA LẠI HÀM PAGIN BLOG 
 
         public Blog getOne(long id)
         {

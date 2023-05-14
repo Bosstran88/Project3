@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using Project3.Migrations;
 using Project3.Repositories;
 using Project3.Services;
+using Project3.Utils;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
@@ -40,20 +41,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-
 #region Add Service
 builder.Services.AddScoped<IBlogService , BlogService>();
+builder.Services.AddScoped<ISecurityService, SecurityService>();
+builder.Services.AddScoped<ICategoryBlogService, CategoryBlogService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IUserService, UserService>();
 #endregion
 
 #region Add Repository
 builder.Services.AddScoped<IBlogRepo , BlogRepo>();
+builder.Services.AddScoped<ICategoryBlogRepo, CategoryBlogRepo>();
+builder.Services.AddScoped<ICourseRepo , CourseRepo>();
+builder.Services.AddScoped<IInformationStudentRepo , InformationStudentRepo>();
+builder.Services.AddScoped<IRoleRepo, RoleRepo>();  
+builder.Services.AddScoped<ISubjectRepo , SubjectRepo>();
+builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IUserRoleRepo , UserRoleRepo>();
 #endregion
 // Add Repository
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<Project3Context>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

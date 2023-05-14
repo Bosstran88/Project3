@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿using Project3.Migrations;
 using Project3.Models;
 using System.Reflection.Metadata;
@@ -11,6 +10,7 @@ namespace Project3.Repositories
         void addOrUpdateCourseRepo(Course course);
         void deleteCourseRepo(Course course);
         Course getOne(long id);
+        bool exitByNameCourse(string nameCourse);
     }
     public class CourseRepo : ICourseRepo
     {
@@ -22,11 +22,12 @@ namespace Project3.Repositories
 
         public void addOrUpdateCourseRepo(Course course)
         {
-            if(course.Id == null)
+            if (course.Id == null)
             {
                 _dbContext.Courses.Add(course);
             }
-            else{
+            else
+            {
                 _dbContext.Courses.Update(course);
             }
             _dbContext.SaveChanges();
@@ -36,6 +37,11 @@ namespace Project3.Repositories
         {
             _dbContext.Courses.Update(course);
             _dbContext.SaveChanges();
+        }
+
+        public bool exitByNameCourse(string nameCourse)
+        {
+            return _dbContext.Courses.Any(r => r.CoursesName == nameCourse);    
         }
 
         public List<Course> GetCourseList()
@@ -49,11 +55,6 @@ namespace Project3.Repositories
 
             return data;
         }
-=======
-﻿namespace Project3.Repositories
-{
-    public interface ICourseRepo
-    {
->>>>>>> cff46de88ecb6444047ba605511d28812d678132
+
     }
 }
