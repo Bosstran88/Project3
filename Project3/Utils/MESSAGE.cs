@@ -23,6 +23,9 @@
             public const string ROLE_NOT_FOUND = "không tìm thấy role này";
 
             public const string USER_NOT_FOUND = "không tìm thấy user này";
+
+            // CategoryBlog
+            public const string CategoryBlogId_NOT_FOUND = "Không tìm thấy Id của CategoryBlog!!!";
         }
 
         public class STATUS_RESPONSE

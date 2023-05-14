@@ -17,7 +17,7 @@ namespace Project3.Controllers
             userService = _userService;
         }
         [HttpPost("/registerUser")]
-        public IActionResult RegisterUser([FromBody] RegisterReq registerUser)
+        public IActionResult RegisterUser([FromBody] RegisterReq? registerUser)
         {
             return Ok(userService.register(registerUser));
         }

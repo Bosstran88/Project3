@@ -6,6 +6,7 @@ using Project3.Entity.Request;
 using Project3.Entity.Response;
 using Project3.Migrations;
 using Project3.Models;
+using Project3.Utils;
 using System.Data;
 using System.Text;
 
@@ -33,7 +34,7 @@ namespace Project3.Repositories
 
         public Role FindByName(string roleName)
         {
-            return _context.Roles.Where(n => n.NameRole == roleName).First();
+            return _context.Roles.Where(n => n.NameRole == roleName && n.IsDelete == Constants.IsDelete.False).First();
         }
 
         public IEnumerable<VRolePagin> getAllRole()
@@ -42,19 +43,22 @@ namespace Project3.Repositories
             new VRolePagin
             {
                 Id = r.Id,
-                NameRole = r.NameRole
+                NameRole = r.NameRole,
+                CreateAt = r.CreatedAt,
+                UpdateAt = r.UpdateAt
             });
         }
 
         public Role GetRoleById(long id)
         {
-            return _context.Roles.Where(n => n.Id == id).First();
+            return _context.Roles.Where(n => n.Id == id && n.IsDelete == Constants.IsDelete.False).First();
+
         }
 
         public PageResponse<IPagedList<VRolePagin>> paginations(RoleReq roleReq)
         {
             var param = new List<SqlParameter>();
-            StringBuilder data = new StringBuilder("select rl.Id,rl.NameRole from Roles as rl\r\nwhere rl.IsDelete = 0 ");
+            StringBuilder data = new StringBuilder("select rl.Id,rl.NameRole,rl.CreatedAt,rl.UpdateAt from Roles as rl\r\nwhere rl.IsDelete = 0 ");
 
             if (!string.IsNullOrEmpty(roleReq.RoleName))
             {
@@ -67,7 +71,9 @@ namespace Project3.Repositories
                 .Select(r => new VRolePagin
                 {
                     Id = r.Id,
-                    NameRole = r.NameRole
+                    NameRole = r.NameRole,
+                    CreateAt = r.CreatedAt,
+                    UpdateAt = r.UpdateAt
                 });
 
             var total = query.Count();
@@ -93,7 +99,7 @@ namespace Project3.Repositories
 
         public bool exitRoleName(string roleName)
         {
-            return _context.Roles.Any(r =>r.NameRole ==  roleName);
+            return _context.Roles.Any(r =>r.NameRole ==  roleName && r.IsDelete == Constants.IsDelete.False);
         }
     }
 }
