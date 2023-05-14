@@ -69,7 +69,7 @@ namespace Project3.Services
             }
             data.IsDelete = 1;
             data.UpdateAt = DateTime.Now;
-            roleRepo.deleteRole(data);
+            roleRepo.update(data);
             return new BaseResponse();
         }
 

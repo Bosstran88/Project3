@@ -4,7 +4,7 @@
     {
         public long? Id { get; set; }
         public long? QuestionId { get; set; }
-        public string? AnswerQuestions { get; set; }
+        public string? AnswerQuestion1 { get; set; }
         public int? Score { get; set; }
     }
 }

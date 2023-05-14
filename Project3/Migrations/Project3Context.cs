@@ -16,9 +16,6 @@ public partial class Project3Context : DbContext
     {
     }
 
-    public virtual DbSet<AnswerQuestion> AnswerQuestions { get; set; }
-
-    public virtual DbSet<AnswerQuestionChose> AnswerQuestionChoses { get; set; }
 
     public virtual DbSet<Blog> Blogs { get; set; }
 
@@ -31,8 +28,6 @@ public partial class Project3Context : DbContext
     public virtual DbSet<HistoryExam> HistoryExams { get; set; }
 
     public virtual DbSet<InformationStudent> InformationStudents { get; set; }
-
-    public virtual DbSet<Question> Questions { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
