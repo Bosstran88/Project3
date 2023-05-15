@@ -1,15 +1,19 @@
-﻿using Project3.Entity.Request;
+﻿using Project3.Entity.Dto;
+using Project3.Entity.Request;
 using Project3.Entity.Response;
 using Project3.Models;
 using Project3.Repositories;
+using Project3.Utils;
 
 namespace Project3.Services
 {
     public interface IAnswerQuestionChoseService
     {
         BaseResponse getOne(long id);
-        BaseResponse create(AddAnswerQuestionChoseReq answerQuestionChoseReq);
+       
+        BaseResponse createOrUpdate(AddAnswerQuestionChoseReq answerQuestionChoseReq);
 
+        BaseResponse deleteAnswerQuestionChose(long id);
     }
     public class AnswerQuestionChoseService : IAnswerQuestionChoseService
     {
@@ -22,14 +26,55 @@ namespace Project3.Services
             this.answerQuestionChose = answerQuestionChose;
         }
 
-        public BaseResponse create(AddAnswerQuestionChoseReq answerQuestionChoseReq)
+        public BaseResponse createOrUpdate(AddAnswerQuestionChoseReq answerQuestionChoseReq)
         {
-            throw new NotImplementedException();
+            if(answerQuestionChoseReq.Id == null)
+            {
+                this.answerQuestionChose = new AnswerQuestionChose();
+                this.answerQuestionChose.CreatedAt = DateTime.Now;
+            }
+            else
+            {
+                this.answerQuestionChose = _answerQuestionChoseRepo.getOne((long)answerQuestionChoseReq.Id);
+                if(this.answerQuestionChose == null)
+                {
+                    throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
+                }
+             
+            }
+            _answerQuestionChoseRepo.createOrUpdateAnswerQuestionChose(this.createOrUpdate);
+            return new BaseResponse();
+        }
+
+        public BaseResponse deleteAnswerQuestionChose(long id)
+        {
+            var data = _answerQuestionChoseRepo.getOne(id);
+            if (data == null)
+            {
+                throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
+            }
+            
+            _answerQuestionChoseRepo.deleteAnswerQuestionChose(data);
+
+            return new BaseResponse();
         }
 
         public BaseResponse getOne(long id)
         {
-            throw new NotImplementedException();
+            var data = _answerQuestionChoseRepo.getOne(id);
+            if (data == null)
+            {
+                return new BaseResponse();
+            }
+            var format = new VAnswerQuestionChoseOne
+            {
+                Id = data.Id,
+                QuestionId = data.QuestionId,
+                AnswerChose =data.AnswerChose,
+                HistoryExamId = data.HistoryExamId,
+                CreatedAt = data.CreatedAt
+            };
+            return new BaseResponse(format);
         }
     }
 

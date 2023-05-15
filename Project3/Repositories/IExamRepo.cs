@@ -10,7 +10,7 @@ namespace Project3.Repositories
         List<Exam> getExamList();
         void addOrUpdateExams(Exam exam);
         void deleteExam(Exam exam);
-        void getOne(long id);
+        Exam getOne(long id);
     }
     public class ExamRepo : IExamRepo
     {
@@ -45,9 +45,10 @@ namespace Project3.Repositories
             return _dbContext.Exams.Where(r => r.IsDelete == 0).ToList();
         }
 
-        public void getOne(long id)
+        public Exam getOne(long id)
         {
             var data = _dbContext.Exams.Where(r => r.Id == id).First();
+            return data;
         }
     }
 }

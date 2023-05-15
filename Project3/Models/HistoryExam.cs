@@ -12,6 +12,7 @@ public partial class HistoryExam
     public long? InformationStudentsId { get; set; }
 
     public DateTime? StartTime { get; set; }
+    public int? IsDelete { get; set; }
 
     public DateTime? EndTime { get; set; }
 
