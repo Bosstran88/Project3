@@ -7,7 +7,8 @@ namespace Project3.Repositories
     public interface IAnswerQuestionChoseRepo
     {
         List<AnswerQuestionChose> GetAnswerQuestionChoseList();
-        void createAnswerQuestionChose(AnswerQuestionChose answerQuestionChose);
+        void createOrUpdateAnswerQuestionChose(AnswerQuestionChose answerQuestionChose);
+        void deleteAnswerQuestionChose(AnswerQuestionChose answerQuestionChose);
         AnswerQuestionChose getOne(long id);
     }
 
@@ -20,9 +21,15 @@ namespace Project3.Repositories
             _dbContext = dbContext;
         }
 
-        public void createAnswerQuestionChose(AnswerQuestionChose answerQuestionChose)
+        public void createOrUpdateAnswerQuestionChose(AnswerQuestionChose answerQuestionChose)
         {
             _dbContext.AnswerQuestionChoses.Add(answerQuestionChose);
+            _dbContext.SaveChanges();
+        }
+
+        public void deleteAnswerQuestionChose(AnswerQuestionChose answerQuestionChose)
+        {
+            _dbContext.AnswerQuestionChoses.Update(answerQuestionChose);
             _dbContext.SaveChanges();
         }
 
