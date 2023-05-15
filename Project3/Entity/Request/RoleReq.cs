@@ -1,6 +1,6 @@
 ﻿namespace Project3.Entity.Request
 {
-    public class     
+    public class RoleReq
     {
         public string? RoleName { get; set; }
         public int? pageSize { get; set; }

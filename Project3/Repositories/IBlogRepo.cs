@@ -49,8 +49,8 @@ namespace Project3.Repositories
 
             if(!string.IsNullOrEmpty(filter.title))
             {
-                data.Append(" and LOWER(b.Title) LIKE '%' + LOWER(@title) + '%' OR b.Title = '' ");
-                param.Add(new SqlParameter("title",SqlDbType.NVarChar ) { Value = filter.title});
+                data.Append(" and LOWER(b.Title) LIKE '%' + @title + '%' ");
+                param.Add(new SqlParameter("@title",SqlDbType.NVarChar ) { Value = filter.title.ToLower() });
             }
             if(filter.categoryId != null)
             {

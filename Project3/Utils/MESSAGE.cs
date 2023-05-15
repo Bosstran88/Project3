@@ -26,6 +26,9 @@
 
             // CategoryBlog
             public const string CategoryBlogId_NOT_FOUND = "Không tìm thấy Id của CategoryBlog!!!";
+
+            //Infostudent 
+            public const string UNQUE_EMAIL = "Email này đã tồn tại !!!";
         }
 
         public class STATUS_RESPONSE

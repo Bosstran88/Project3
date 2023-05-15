@@ -125,6 +125,9 @@ namespace Project3.Services
                     Role = this.role
                 }};
                 this.student = new InformationStudent();
+                this.student.IsDelete = Constants.IsDelete.False;
+                this.student.CreatedAt = DateTime.Now;
+                this.student.Status = Constants.Status.UnActive;
                 userRepo.registerUser(this.user, this.student);
             }
             return new BaseResponse(MESSAGE.STATUS_RESPONSE.SUCCESS, MESSAGE.VALIDATE.REGISTER_SUCCESS);

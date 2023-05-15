@@ -1,5 +1,13 @@
-﻿using Project3.Migrations;
+﻿using Microsoft.Data.SqlClient;
+using PagedList;
+using Project3.Entity.Dto;
+using Project3.Entity.Request;
+using Project3.Entity.Response;
+using Project3.Migrations;
 using Project3.Models;
+using Project3.Utils;
+using System.Text;
+using System.Data;
 
 namespace Project3.Repositories
 {
@@ -7,11 +15,12 @@ namespace Project3.Repositories
     {
         InformationStudent getOne(long id);
         bool exitByEmail(string email);
-        bool IdCardStudent(string idCardStudent);
+        bool exitIdCardStudent(string idCardStudent);
 
         //Xóa cái AddOrUpdate đi
         void AddInfo(InformationStudent informationStudent);
         void UpdateInfo(InformationStudent informationStudent);
+        PageResponse<IPagedList<VInfomationStudent>> pagintions(InfomationStudentReq req);
     }
     public class InformationStudentRepo : IInformationStudentRepo
     {
@@ -41,7 +50,7 @@ namespace Project3.Repositories
             }
             _dbContext.SaveChanges();
         }
-
+        // Xóa addOrUpdateInformationStudent
         public void UpdateInfo(InformationStudent informationStudent)
         {
             _dbContext.InformationStudents.Update(informationStudent);
@@ -52,9 +61,7 @@ namespace Project3.Repositories
 
         public InformationStudent getOne(long id)
         {
-            var data = _dbContext.InformationStudents.Where(r => r.Id == id).First();
-
-            return data;
+            return _dbContext.InformationStudents.Where(r => r.Id == id && r.IsDelete == Constants.IsDelete.False).First();
         }
 
         public void AddInfo(InformationStudent informationStudent)
@@ -68,9 +75,25 @@ namespace Project3.Repositories
             return _dbContext.InformationStudents.Any(r => r.Email == email);
         }
 
-        public bool IdCardStudent(string idCardStudent)
+        public bool exitIdCardStudent(string idCardStudent)
         {
             return _dbContext.InformationStudents.Any(r => r.IdCardStudent == idCardStudent);
+        }
+
+        public PageResponse<IPagedList<VInfomationStudent>> pagintions(InfomationStudentReq req)
+        {
+            var param = new List<SqlParameter>();
+            StringBuilder data = new StringBuilder(" select i.Id,i.FullName,i.DateBirth,i.IdCardStudent,\r\ni.WasBorn,i.IdentityCard,i.StartCard,i.EndCard,\r\ni.FromCard,i.Status,i.Email,i.CreatedAt,i.UpdateAt\r\nfrom InformationStudents as i\r\nwhere i.IsDelete = 0 ");
+            if (!string.IsNullOrEmpty(req.fullName))
+            {
+                data.Append(" and LOWER(b.Title) LIKE '%' + LOWER(@title) + '%' ");
+                param.Add(new SqlParameter("@fullName", SqlDbType.NVarChar) { Value = req.fullName.ToLower() });
+            }
+            if ()
+            {
+                data.Append("");
+                param.Add("");
+            }
         }
     }
 }
