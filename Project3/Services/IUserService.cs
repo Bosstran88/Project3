@@ -124,12 +124,11 @@ namespace Project3.Services
                 {
                     Role = this.role
                 }};
-                userRepo.AddUser(this.user);
-                this.student = new InformationStudent()
-                {
-                    Id = this.user.Id
-                };
-                studentRepo.AddInfo(this.student);
+                this.student = new InformationStudent();
+                this.student.IsDelete = Constants.IsDelete.False;
+                this.student.CreatedAt = DateTime.Now;
+                this.student.Status = Constants.Status.UnActive;
+                userRepo.registerUser(this.user, this.student);
             }
             return new BaseResponse(MESSAGE.STATUS_RESPONSE.SUCCESS, MESSAGE.VALIDATE.REGISTER_SUCCESS);
         }

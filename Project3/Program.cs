@@ -47,9 +47,11 @@ builder.Services.AddScoped<ISecurityService, SecurityService>();
 builder.Services.AddScoped<ICategoryBlogService, CategoryBlogService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IInformationStudentService, InformationStudentService>();
 #endregion
 
 #region Add Repository
+builder.Services.AddScoped<IInformationStudentRepo, InformationStudentRepo>();
 builder.Services.AddScoped<IBlogRepo , BlogRepo>();
 builder.Services.AddScoped<ICategoryBlogRepo, CategoryBlogRepo>();
 builder.Services.AddScoped<ICourseRepo , CourseRepo>();

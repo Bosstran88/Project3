@@ -9,6 +9,7 @@ namespace Project3.Services
 {
     public interface ICategoryBlogService
     {
+        BaseResponse search(CategoryBlogReq filter);
         BaseResponse getOne(long id);
         BaseResponse deleteCategoy(long id);
         BaseResponse createOrUpdate(AddCategoryBlog categoryBlog);
@@ -28,6 +29,7 @@ namespace Project3.Services
             if (categoryBlog.Id == null)
             {
                 this.categoryBlog = new CategoryBlog();
+                this.categoryBlog.IsDelete = Constants.IsDelete.False;
                 this.categoryBlog.CreatedAt = DateTime.Now;
             }
             else
@@ -59,6 +61,7 @@ namespace Project3.Services
                 throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
             }
             data.UpdateAt = DateTime.Now;
+            data.IsDelete = Constants.IsDelete.True;
             _categoryBlogRepo.deleteCategoryBlog(data);
             return new BaseResponse();
         }
@@ -80,6 +83,9 @@ namespace Project3.Services
             return new BaseResponse(format);
         }
 
-      
+        public BaseResponse search(CategoryBlogReq filter)
+        {
+            return new BaseResponse(_categoryBlogRepo.search(filter));
+        }
     }
 }

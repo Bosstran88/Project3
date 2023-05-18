@@ -1,5 +1,6 @@
 ﻿using Project3.Migrations;
 using Project3.Models;
+using Project3.Utils;
 using System.Reflection.Metadata;
 
 namespace Project3.Repositories
@@ -41,7 +42,7 @@ namespace Project3.Repositories
 
         public bool exitByNameCourse(string nameCourse)
         {
-            return _dbContext.Courses.Any(r => r.CoursesName == nameCourse);    
+            return _dbContext.Courses.Any(r => r.CoursesName == nameCourse && r.IsDelete == Constants.IsDelete.False);    
         }
 
         public List<Course> GetCourseList()
