@@ -12,6 +12,7 @@ namespace Project3.Services
         BaseResponse getOne(long id);
         BaseResponse deleteExam(long id);
         BaseResponse createOrUpdate(AddExamReq examReq);
+        BaseResponse getPagin(ExamReq filter);
     }
 
     public class ExamService : IExamService
@@ -60,6 +61,12 @@ namespace Project3.Services
         public BaseResponse getOne(long id)
         {
             throw new NotImplementedException();
+        }
+
+        public BaseResponse getPagin(ExamReq filter)
+        {
+            var data = _examRepo.paginations(filter);
+            return new BaseResponse(data);
         }
     }
 }

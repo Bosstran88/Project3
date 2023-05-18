@@ -36,7 +36,8 @@ namespace Project3.Controllers
         [HttpPost("search")]
         public async Task<IActionResult> search([FromBody] AnswerQuestionReq filter)
         {
-            return Ok(_answerQuestionService.getPagin(filter));
+            //return Ok(_answerQuestionService.getPagin(filter));
+            return Ok();
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Project3.Services
         BaseResponse createOrUpdate(AddAnswerQuestionChoseReq answerQuestionChoseReq);
 
         BaseResponse deleteAnswerQuestionChose(long id);
+
     }
     public class AnswerQuestionChoseService : IAnswerQuestionChoseService
     {
@@ -28,6 +29,7 @@ namespace Project3.Services
 
         public BaseResponse createOrUpdate(AddAnswerQuestionChoseReq answerQuestionChoseReq)
         {
+  
             if(answerQuestionChoseReq.Id == null)
             {
                 this.answerQuestionChose = new AnswerQuestionChose();
@@ -42,7 +44,7 @@ namespace Project3.Services
                 }
              
             }
-            _answerQuestionChoseRepo.createOrUpdateAnswerQuestionChose(this.createOrUpdate);
+            _answerQuestionChoseRepo.createOrUpdateAnswerQuestionChose(this.answerQuestionChose);
             return new BaseResponse();
         }
 
