@@ -24,4 +24,5 @@ public partial class User
     public virtual InformationStudent? InformationStudent { get; set; }
 
     public virtual ICollection<UserRole> UserRoles { get; set; }
+
 }

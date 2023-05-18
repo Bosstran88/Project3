@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project3.Models;
-[Table("AnswerQuestion")]
 public partial class AnswerQuestion
 {
     public long Id { get; set; }
