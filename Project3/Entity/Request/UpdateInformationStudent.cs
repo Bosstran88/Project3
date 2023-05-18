@@ -8,19 +8,16 @@
 
         public DateTime? DateBirth { get; set; }
 
-        public string? IdCardStudent { get; set; }
-
         public string? WasBorn { get; set; }
 
         public string? Email { get; set; }
 
+        public string? IdentityCard { get; set; }
         public DateTime? StartCard { get; set; }
 
         public DateTime? EndCard { get; set; }
 
         public string? FromCard { get; set; }
-
-        public DateTime? UpdateAt { get; set; }
 
         public string? Status { get; set; }
     }

@@ -18,16 +18,22 @@ namespace Project3.Services
     public class BlogService : IBlogService
     {
         IBlogRepo _blogRepo;
+        ICategoryBlogRepo _categoryBlogRepo;
         Blog blog;
 
-        public BlogService(IBlogRepo blogRepo)
+        public BlogService(IBlogRepo blogRepo, ICategoryBlogRepo categoryBlogRepo)
         {
             _blogRepo = blogRepo;
+            _categoryBlogRepo = categoryBlogRepo;
         }
         public BaseResponse createOrUpdate(AddBlogReq blogReq)
         {
             if(blogReq.Id  == null)
             {
+                if (!_categoryBlogRepo.exitCategoryBlogId((long)blogReq.CategoryId))
+                {
+                    throw new ValidateException(MESSAGE.VALIDATE.CategoryBlogId_NOT_FOUND);
+                }
                 this.blog = new Blog();
                 this.blog.IsDelete = Constants.IsDelete.False;
                 this.blog.CreatedAt = DateTime.Now;
@@ -38,6 +44,13 @@ namespace Project3.Services
                 if(this.blog == null)
                 {
                     throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
+                }
+                if(this.blog.CategoryId != blogReq.CategoryId)
+                {
+                    if (!_categoryBlogRepo.exitCategoryBlogId((long)blogReq.CategoryId))
+                    {
+                        throw new ValidateException(MESSAGE.VALIDATE.CategoryBlogId_NOT_FOUND);
+                    }
                 }
                 this.blog.UpdateAt = DateTime.Now;
             }

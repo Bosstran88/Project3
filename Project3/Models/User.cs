@@ -21,8 +21,6 @@ public partial class User
 
     public virtual ICollection<Blog> Blogs { get; set; } 
 
-    public virtual InformationStudent? InformationStudent { get; set; }
-
     public virtual ICollection<UserRole> UserRoles { get; set; }
 
 }

@@ -7,6 +7,7 @@ using Project3.Entity.Request;
 using Project3.Entity.Response;
 using Project3.Migrations;
 using Project3.Models;
+using Project3.Utils;
 using System.Data;
 using System.Text;
 
@@ -50,7 +51,7 @@ namespace Project3.Repositories
 
         public bool exitByNameCSubject(string nameSubject)
         {
-            return _dbContext.Subjects.Any(r => r.SubjectName == nameSubject);
+            return _dbContext.Subjects.Any(r => r.SubjectName == nameSubject && r.IsDelete == Constants.IsDelete.False);
         }
 
         public Subject getOne(long id)
