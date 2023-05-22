@@ -21,10 +21,9 @@ namespace Project3.Services
         IAnswerQuestionChoseRepo _answerQuestionChoseRepo;
         AnswerQuestionChose answerQuestionChose;
 
-        public AnswerQuestionChoseService(IAnswerQuestionChoseRepo answerQuestionChoseRepo, AnswerQuestionChose answerQuestionChose)
+        public AnswerQuestionChoseService(IAnswerQuestionChoseRepo answerQuestionChoseRepo)
         {
             _answerQuestionChoseRepo = answerQuestionChoseRepo;
-            this.answerQuestionChose = answerQuestionChose;
         }
 
         public BaseResponse createOrUpdate(AddAnswerQuestionChoseReq answerQuestionChoseReq)
@@ -72,7 +71,7 @@ namespace Project3.Services
             {
                 Id = data.Id,
                 QuestionId = data.QuestionId,
-                AnswerChose =data.AnswerChose,
+                AnswerChoseId =data.AnswerChoseId,
                 HistoryExamId = data.HistoryExamId,
                 CreatedAt = data.CreatedAt
             };

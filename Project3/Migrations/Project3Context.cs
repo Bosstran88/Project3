@@ -78,7 +78,7 @@ public partial class Project3Context : DbContext
 
             entity.ToTable("AnswerQuestionChose");
 
-            entity.Property(e => e.AnswerChose).HasMaxLength(2000);
+           
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.HistoryExam).WithMany(p => p.AnswerQuestionChoses)

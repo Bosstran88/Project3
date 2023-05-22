@@ -82,18 +82,19 @@ namespace Project3.Repositories
 
         public PageResponse<IPagedList<VInfomationStudent>> pagintions(InfomationStudentReq req)
         {
-            var param = new List<SqlParameter>();
-            StringBuilder data = new StringBuilder(" select i.Id,i.FullName,i.DateBirth,i.IdCardStudent,\r\ni.WasBorn,i.IdentityCard,i.StartCard,i.EndCard,\r\ni.FromCard,i.Status,i.Email,i.CreatedAt,i.UpdateAt\r\nfrom InformationStudents as i\r\nwhere i.IsDelete = 0 ");
-            if (!string.IsNullOrEmpty(req.fullName))
-            {
-                data.Append(" and LOWER(b.Title) LIKE '%' + LOWER(@title) + '%' ");
-                param.Add(new SqlParameter("@fullName", SqlDbType.NVarChar) { Value = req.fullName.ToLower() });
-            }
-            if ()
-            {
-                data.Append("");
-                param.Add("");
-            }
+            //var param = new List<SqlParameter>();
+            //StringBuilder data = new StringBuilder(" select i.Id,i.FullName,i.DateBirth,i.IdCardStudent,\r\ni.WasBorn,i.IdentityCard,i.StartCard,i.EndCard,\r\ni.FromCard,i.Status,i.Email,i.CreatedAt,i.UpdateAt\r\nfrom InformationStudents as i\r\nwhere i.IsDelete = 0 ");
+            // / if (!string.IsNullOrEmpty(req.fullName))
+            //{
+            //    //     data.Append(" and LOWER(b.Title) LIKE '%' + LOWER(@title) + '%' ");
+            //    param.Add(new SqlParameter("@fullName", SqlDbType.NVarChar) { Value = req.fullName.ToLower() });
+            //}
+            //if ()
+            //{
+            //    data.Append("");
+            //    param.Add("");
+            //}
+            return null;
         }
     }
 }

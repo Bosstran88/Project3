@@ -9,7 +9,7 @@ public partial class AnswerQuestionChose
 
     public long? QuestionId { get; set; }
 
-    public string? AnswerChoseId { get; set; }
+    public long? AnswerChoseId { get; set; }
 
     public long? HistoryExamId { get; set; }
 

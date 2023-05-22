@@ -48,6 +48,12 @@ builder.Services.AddScoped<ICategoryBlogService, CategoryBlogService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInformationStudentService, InformationStudentService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IAnswerQuestionChoseService, AnswerQuestionChoseService>();
+builder.Services.AddScoped<IAnswerQuestionService, AnswerQuestionService>();
+builder.Services.AddScoped<IExamService, ExamService>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<IHistoryExamService, HistoryExamService>();
 #endregion
 
 #region Add Repository
@@ -60,8 +66,14 @@ builder.Services.AddScoped<IRoleRepo, RoleRepo>();
 builder.Services.AddScoped<ISubjectRepo , SubjectRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IUserRoleRepo , UserRoleRepo>();
+builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();
+builder.Services.AddScoped<IHistoryExamRepo, HistoryExamRepo>();
+builder.Services.AddScoped<IExamRepo, ExamRepo>();
+builder.Services.AddScoped<IAnswerQuestionChoseRepo, AnswerQuestionChoseRepo>();
+builder.Services.AddScoped<IAnswerQuestionRepo, AnswerQuestionRepo>();
 #endregion
 // Add Repository
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

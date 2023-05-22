@@ -3,7 +3,9 @@
     public class AnswerQuestionReq
     {
         public long? QuestionId { get; set; }
-        public string? AnswerQuestions { get; set; }
+        public string? AnswerQuestion1 { get; set; }
         public int? Score { get; set; }
+        public int? pageSize { get; set; }
+        public int? pageNumber { get; set; } = 0;
     }
 }

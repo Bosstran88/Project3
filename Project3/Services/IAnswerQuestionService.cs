@@ -12,16 +12,16 @@ namespace Project3.Services
         BaseResponse getOne(long id);
         BaseResponse deleteAnswerQuestion(long id);
         BaseResponse createOrUpdate(AddAnswerQuestionReq answerQuestionReq);
+        BaseResponse getPagin(AnswerQuestionReq filter);
     }
     public class AnswerQuestionService : IAnswerQuestionService
     {
         IAnswerQuestionRepo _answerQuestionRepo;
         AnswerQuestion answerQuestion;
 
-        public AnswerQuestionService(IAnswerQuestionRepo answerQuestionRepo, AnswerQuestion answerQuestion)
+        public AnswerQuestionService(IAnswerQuestionRepo answerQuestionRepo)
         {
             _answerQuestionRepo = answerQuestionRepo;
-            this.answerQuestion = answerQuestion;
         }
 
         public BaseResponse createOrUpdate(AddAnswerQuestionReq answerQuestionReq)
@@ -85,6 +85,12 @@ namespace Project3.Services
                 
             };
             return new BaseResponse(format);
+        }
+
+        public BaseResponse getPagin(AnswerQuestionReq filter)
+        {
+            var data = _answerQuestionRepo.paginations(filter);
+            return new BaseResponse(data);
         }
     }
 }

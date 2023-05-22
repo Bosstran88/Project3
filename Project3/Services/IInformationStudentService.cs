@@ -86,7 +86,7 @@ namespace Project3.Services
 
         public BaseResponse getPagin()
         {
-            return new BaseResponse(inforRepo.);
+            return new BaseResponse();
         }
     }
 }

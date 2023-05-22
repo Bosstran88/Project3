@@ -19,10 +19,9 @@ namespace Project3.Services
         IHistoryExamRepo _historyExamRepo;
         HistoryExam history;
 
-        public HistoryExamService(IHistoryExamRepo historyExamRepo, HistoryExam history)
+        public HistoryExamService(IHistoryExamRepo historyExamRepo)
         {
             _historyExamRepo = historyExamRepo;
-            this.history = history;
         }
 
         public BaseResponse createOrUpdate(AddHistoryExamReq historyExamReq)

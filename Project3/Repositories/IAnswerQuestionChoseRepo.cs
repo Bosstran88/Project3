@@ -38,7 +38,7 @@ namespace Project3.Repositories
             return _dbContext.Set<AnswerQuestionChose>().ToList();
         }
 
-        public AnswerQuestionChose getOne(long id)
+        public AnswerQuestionChose? getOne(long id)
         {
             return _dbContext.Set<AnswerQuestionChose>().FirstOrDefault(e => e.Id == id);
         }
