@@ -7,9 +7,7 @@ public partial class HistoryExam
 {
     public long Id { get; set; }
 
-    public long? ExamId { get; set; }
-
-    public long? InformationStudentsId { get; set; }
+    public long? InfostudentId { get; set; }
 
     public DateTime? StartTime { get; set; }
     public int? IsDelete { get; set; }

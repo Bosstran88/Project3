@@ -11,7 +11,8 @@ namespace Project3.Services
     {
         BaseResponse UpdateInfo(UpdateInformationStudent req);
         BaseResponse getOne(long id);
-        BaseResponse getPagin();
+        BaseResponse getPagin(InfomationStudentReq req);
+        BaseResponse deleteAcount(long id);
     }
 
     public class InformationStudentService : IInformationStudentService
@@ -21,6 +22,16 @@ namespace Project3.Services
         public InformationStudentService(IInformationStudentRepo _inforRepo)
         {
             inforRepo = _inforRepo;
+        }
+
+        public BaseResponse deleteAcount(long id)
+        {
+            var data = inforRepo.getOne(id);
+            if(data == null) throw new ValidateException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
+            data.UpdateAt = DateTime.Now;
+            data.IsDelete = Constants.IsDelete.True;
+            data.Status = Constants.Status.Delete;
+            return new BaseResponse();
         }
 
         public BaseResponse UpdateInfo(UpdateInformationStudent req)
@@ -84,9 +95,9 @@ namespace Project3.Services
             });
         }
 
-        public BaseResponse getPagin()
+        public BaseResponse getPagin(InfomationStudentReq req)
         {
-            return new BaseResponse(inforRepo.);
+            return new BaseResponse(inforRepo.pagintions(req));
         }
     }
 }

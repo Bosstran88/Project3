@@ -55,12 +55,25 @@ namespace Project3.Services
 
         public BaseResponse deleteExam(long id)
         {
-            throw new NotImplementedException();
+            var data = _examRepo.getOne(id);
+            if (data == null) throw new ValidateException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
+            data.IsDelete = Constants.IsDelete.True;
+            data.UpdateAt = DateTime.Now;
+            _examRepo.deleteExam(data);
+            return new BaseResponse(); ;
         }
 
         public BaseResponse getOne(long id)
         {
-            throw new NotImplementedException();
+            var data = _examRepo.getOne(id);
+            return new BaseResponse(new VExamOne
+            {
+                Id = data.Id,
+                NameExam = data.NameExam,
+                LimitTime = data.LimitTime, 
+                CreateAt = data.CreatedAt,
+                UpdateAt = data.UpdateAt
+            });
         }
 
         public BaseResponse getPagin(ExamReq filter)

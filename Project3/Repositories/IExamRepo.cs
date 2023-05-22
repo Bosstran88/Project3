@@ -62,7 +62,7 @@ namespace Project3.Repositories
         public PageResponse<IPagedList<VExamPagin>> paginations(ExamReq filter)
         {
             var param = new List<SqlParameter>();
-            StringBuilder data = new StringBuilder("select b.Id,b.NameExam,b.LimitTime,b.CreateAt from Exam as b\r\nwhere b.IsDelete = 0");
+            StringBuilder data = new StringBuilder("select b.Id,b.NameExam,b.LimitTime,b.CreatedAt from Exam as b\r\nwhere b.IsDelete = 0");
 
             if (!string.IsNullOrEmpty(filter.NameExam))
             {

@@ -28,16 +28,16 @@ namespace Project3.Controllers
             return Ok(_infoService.getOne(Id));
         }
 
-        //[HttpDelete("deleteById/{menuId}")]
-        //public async Task<IActionResult> deleteById(long menuId)
-        //{
-        //    return Ok(_infoService.UpdateInfo());
-        //}
+        [HttpDelete("deleteById/{id}")]
+        public async Task<IActionResult> deleteById(long id)
+        {
+            return Ok(_infoService.deleteAcount(id));
+        }
 
         [HttpPost("search")]
-        public async Task<IActionResult> search([FromBody] BlogReq filter)
+        public async Task<IActionResult> search([FromBody] InfomationStudentReq filter)
         {
-            return Ok(_infoService.getPagin());
+            return Ok(_infoService.getPagin(filter));
         }
     }
 }

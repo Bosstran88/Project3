@@ -125,6 +125,8 @@ namespace Project3.Services
                     Role = this.role
                 }};
                 this.student = new InformationStudent();
+                this.student.IdCardStudent = registerUser.idCardStudent;
+                this.student.FullName = registerUser.fullName;
                 this.student.IsDelete = Constants.IsDelete.False;
                 this.student.CreatedAt = DateTime.Now;
                 this.student.Status = Constants.Status.UnActive;

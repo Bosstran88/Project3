@@ -22,7 +22,7 @@ namespace Project3.Controllers
             return Ok(_questionService.createOrUpdate(menuReq));
         }
 
-        [HttpGet("GetById/{Id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<IActionResult> getById(long id)
         {
             return Ok(_questionService.getOne(id));
@@ -37,8 +37,7 @@ namespace Project3.Controllers
         [HttpPost("search")]
         public async Task<IActionResult> search([FromBody] QuestionReq filter)
         {
-            //return Ok(_questionService.getPagin(filter));
-            return Ok();
+            return Ok(_questionService.pagination(filter));
         }
     }
 }
