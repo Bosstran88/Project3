@@ -29,6 +29,8 @@
 
             //Infostudent 
             public const string UNQUE_EMAIL = "Email này đã tồn tại !!!";
+
+            public const string ANSWER_QUESTION_NOT_BIG_THAN_4 = "Câu trả lời đã vượt quá số lượng add thêm vui lòng xóa câu trả lời hoặc cập nhập lại câu trả lời !!";
         }
 
         public class STATUS_RESPONSE

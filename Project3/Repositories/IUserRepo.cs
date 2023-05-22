@@ -83,17 +83,6 @@ namespace Project3.Repositories
             throw new NotImplementedException();
         }
 
-        public User GetUserByUsername(string username)
-        {
-            return _context.Users.First(u => u.UserName == username && u.IsDelete == Constants.IsDelete.False);
-        }
-
-        public void AddUserAsync(User user)
-        {
-            _context.Users.AddAsync(user);
-            _context.SaveChangesAsync();
-        }
-        // XÓa Phần trên
         public bool UserExistsByUsername(string username)
         {
             return _context.Users.Any(u => u.UserName == username && u.IsDelete == Constants.IsDelete.False);

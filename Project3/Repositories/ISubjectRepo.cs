@@ -21,6 +21,7 @@ namespace Project3.Repositories
         void DeleteSubject(Subject subject);
         Subject getOne(long id);
         bool exitByNameCSubject(string nameSubject);
+    
     }
     public class SubjectRepo : ISubjectRepo
     {
@@ -68,21 +69,12 @@ namespace Project3.Repositories
 
         public PageResponse<IPagedList<VSubjectPagin>> paginations(SubjectReq filter)
         {
-
             var param = new List<SqlParameter>();
-            StringBuilder data = new StringBuilder("select b.Id,b.SubjectName,b.CoureId,b.CreatedAt from Subjects as b\r\nwhere b.IsDelete = 0 ");
-
+            StringBuilder data = new StringBuilder("select b.Id,b.SubjectName,b.CreatedAt from Subjects as b\r\nwhere b.IsDelete = 0 ");
             if (!string.IsNullOrEmpty(filter.subjectName))
             {
-
                 data.Append(" and LOWER(b.subjectName) LIKE '%' + LOWER(@subjectName) + '%' OR b.SubjectName = '' ");
                 param.Add(new SqlParameter("title", SqlDbType.NVarChar) { Value = filter.subjectName });
-            }
-            if (filter.courseId != null)
-            {
-
-                data.Append(" and b.CourseId = @courseId");
-                param.Add(new SqlParameter("@courseId", SqlDbType.VarChar) { Value = filter.courseId });
             }
             var query = _dbContext.Set<Subject>().FromSqlRaw(data.ToString(), param.ToArray())
                 .OrderBy(r => r.SubjectName).ThenByDescending(r => r.CreatedAt)
@@ -95,12 +87,9 @@ namespace Project3.Repositories
                     CoursesId = r.CoursesId,
                     CreatedAt = r.CreatedAt
                 });
-            
             var total = query.Count();
             var pageData = query.ToPagedList((int)filter.pageNumber, (int)filter.pageSize);
-
             var pageTotal = Math.Round((decimal)total / (int)filter.pageSize);
-
             return new PageResponse<IPagedList<VSubjectPagin>>(pageData, (int)filter.pageNumber, (int)filter.pageSize, total, (int)pageTotal);
         }
     }
