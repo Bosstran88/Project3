@@ -18,6 +18,8 @@ namespace Project3.Repositories
         void addOrUpdateQuestion(Question question);
         void deleteQuestion(Question question);
         Question getOne(long id);
+
+        PageResponse<IPagedList<VQuestionRes>> pagination(QuestionReq req);
     }
 
     public class QuestionRepo : IQuestionRepo
@@ -60,39 +62,35 @@ namespace Project3.Repositories
             
         }
 
-        public PageResponse<IPagedList<VQuestionPagin>> paginations(QuestionReq filter)
+        public PageResponse<IPagedList<VQuestionRes>> pagination(QuestionReq req)
         {
             var param = new List<SqlParameter>();
-            StringBuilder data = new StringBuilder("select b.Id,b.ExamId,b.NameQuestion,b.CreatedAt from Question as b where b.IsDelete = 0 ");
+            StringBuilder data = new StringBuilder(" select q.Id , q.NameQuestion , q.CreatedAt , q.UpdateAt , q.ExamId from Question as q where q.IsDelete = 0 ");
 
-            if (!string.IsNullOrEmpty(filter.NameQuestion))
+            if (!string.IsNullOrEmpty(req.NameQuestion))
             {
-                data.Append(" and LOWER(b.NameQuestion) LIKE '%' + @NameQuestion + '%' ");
-                param.Add(new SqlParameter("@NameQuestion", SqlDbType.NVarChar) { Value = filter.NameQuestion.ToLower() });
+                data.Append(" and LOWER(rl.NameRole) LIKE '%' + @roleName + '%' ");
+                param.Add(new SqlParameter("@roleName", SqlDbType.NVarChar) { Value = req.NameQuestion.ToLower() });
             }
-            if (filter.ExamId != null)
-            {
-                data.Append(" and b.ExamId = @ExamId");
-                param.Add(new SqlParameter("@ExamId", SqlDbType.VarChar) { Value = filter.ExamId });
-            }
-            var query = _dbContext.Set<Question>().FromSqlRaw(data.ToString(), param.ToArray())
+
+            var query = _dbContext.Set<Question>().FromSqlRaw(data.ToString())
                 .OrderBy(r => r.NameQuestion).ThenByDescending(r => r.CreatedAt)
-                .Select(
-                r => new VQuestionPagin
+                .Select(r => new VQuestionRes
                 {
-                    Id = r.Id,
-                    ExamId = r.ExamId,
-                    NameQuestion = r.NameQuestion,
-                    CreatedAt = r.CreatedAt
+                    id = r.Id,
+                    nameQuestion = r.NameQuestion,
+                    createAt = r.CreatedAt,
+                    updateAt = r.UpdateAt,
+                    ExamId = r.ExamId
                 });
 
             var total = query.Count();
 
-            var pageData = query.ToPagedList((int)filter.pageNumber, (int)filter.pageSize);
+            var pageData = query.ToPagedList((int)req.pageNumber, (int)req.pageSize);
 
-            var pageTotal = Math.Round((decimal)total / (int)filter.pageSize);
+            var pageTotal = Math.Round((decimal)total / (int)req.pageSize);
 
-            return new PageResponse<IPagedList<VQuestionPagin>>(pageData, (int)filter.pageNumber, (int)filter.pageSize, total, (int)pageTotal);
+            return new PageResponse<IPagedList<VQuestionRes>>(pageData, (int)req.pageNumber, (int)req.pageSize, total, (int)pageTotal);
         }
     }
 }

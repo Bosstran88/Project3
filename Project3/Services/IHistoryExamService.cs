@@ -10,8 +10,8 @@ namespace Project3.Services
     public interface IHistoryExamService
     {
         BaseResponse getOne(long id);
-        BaseResponse deleteHistoryExam(long id);
-        BaseResponse createOrUpdate(AddHistoryExamReq historyExamReq);
+        BaseResponse create(AddHistoryExamReq historyExamReq);
+        BaseResponse listHistoryExam(long userId);
     }
 
     public class HistoryExamService : IHistoryExamService
@@ -24,65 +24,40 @@ namespace Project3.Services
             _historyExamRepo = historyExamRepo;
         }
 
-        public BaseResponse createOrUpdate(AddHistoryExamReq historyExamReq)
+        public BaseResponse create(AddHistoryExamReq historyExamReq)
         {
-            if(historyExamReq.Id == null)
-            {
-                this.history = new HistoryExam();
-                this.history.IsDelete = Constants.IsDelete.False;
-                this.history.CreatedAt = DateTime.Now;
-            }
-            else
-            {
-                this.history = _historyExamRepo.getOne((long)historyExamReq.Id);
-                if(this.history == null)
-                {
-                    throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
-                }
-            }
-            convertFromDtoToModel(historyExamReq);
-            _historyExamRepo.addOrUpdateHistotyExams(this.history);
-            return new BaseResponse();
-        }
+            this.history = new HistoryExam();
+            this.history.IsDelete = Constants.IsDelete.False;
+            this.history.CreatedAt = DateTime.Now;
+            this.history.InfostudentId = historyExamReq.studentId;
+            this.history.StartTime = historyExamReq.StartTime;
+            this.history.EndTime = historyExamReq.EndTime;
 
-        private void convertFromDtoToModel(AddHistoryExamReq historyExamReq)
-        {
-            history.ExamId = historyExamReq.ExamId;
-            history.InformationStudentsId = historyExamReq.InformationStudentsId;
-            history.StartTime = historyExamReq.StartTime;
-            history.EndTime = historyExamReq.EndTime;
-        }
-
-        public BaseResponse deleteHistoryExam(long id)
-        {
-            var data = _historyExamRepo.getOne(id);
-            if(data == null)
-            {
-                throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
-            }
-            data.IsDelete = 1;
-            _historyExamRepo.deleteHistoryExam(data);
-
+            _historyExamRepo.add(this.history);
             return new BaseResponse();
         }
 
         public BaseResponse getOne(long id)
         {
             var data = _historyExamRepo.getOne(id);
-            if(data == null)
+            if (data == null)
             {
                 return new BaseResponse();
             }
             var format = new VHistoryExamOne
             {
                 Id = data.Id,
-                ExamId = data.ExamId,
-                InformationStudentsId = data.InformationStudentsId,
+                InfostudentId = data.InfostudentId,
                 StartTime = data.StartTime,
                 EndTime = data.EndTime,
                 CreatedAt = data.CreatedAt
             };
             return new BaseResponse(format);
+        }
+
+        public BaseResponse listHistoryExam(long userId)
+        {
+            return new BaseResponse(_historyExamRepo.GetHistoryExamList(userId));
         }
     }
 }

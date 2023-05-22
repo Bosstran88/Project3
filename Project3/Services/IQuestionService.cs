@@ -13,6 +13,7 @@ namespace Project3.Services
         BaseResponse deleteQuestion(long id);
         BaseResponse getPagin(QuestionReq filter);
         BaseResponse createOrUpdate(AddQuestionReq questionReq);
+        BaseResponse pagination(QuestionReq req);
     }
     public class QuestionService : IQuestionService
     {
@@ -20,6 +21,7 @@ namespace Project3.Services
         Question question;
 
         public QuestionService(IQuestionRepo questionRepo)
+
         {
             _questionRepo = questionRepo;
         }
@@ -82,10 +84,9 @@ namespace Project3.Services
             return new BaseResponse(format);
         }
 
-        public BaseResponse getPagin(QuestionReq filter)
+        public BaseResponse pagination(QuestionReq req)
         {
-            var data = _questionRepo.paginations(filter);
-            return new BaseResponse(data);
+            return new BaseResponse(_questionRepo.pagination(req));
         }
     }
 }

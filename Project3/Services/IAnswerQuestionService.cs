@@ -12,7 +12,8 @@ namespace Project3.Services
         BaseResponse getOne(long id);
         BaseResponse deleteAnswerQuestion(long id);
         BaseResponse createOrUpdate(AddAnswerQuestionReq answerQuestionReq);
-        BaseResponse getPagin(AnswerQuestionReq filter);
+        BaseResponse listAnswerQuestion(long idQuestion);
+        BaseResponse pagination(AnswerQuestionPageReq answerQuestionReq);
     }
     public class AnswerQuestionService : IAnswerQuestionService
     {
@@ -26,8 +27,12 @@ namespace Project3.Services
 
         public BaseResponse createOrUpdate(AddAnswerQuestionReq answerQuestionReq)
         {
-            if(answerQuestionReq == null)
+            if(answerQuestionReq.Id == null)
             {
+                if(_answerQuestionRepo.countAnswerOfQuestion((long)answerQuestionReq.QuestionId) == 4)
+                {
+                    throw new ValidateException(MESSAGE.VALIDATE.ANSWER_QUESTION_NOT_BIG_THAN_4);
+                }
                 this.answerQuestion = new AnswerQuestion();
                 this.answerQuestion.IsDelete = Constants.IsDelete.False;
                 this.answerQuestion.CreatedAt = DateTime.Now;
@@ -49,7 +54,7 @@ namespace Project3.Services
         private void ConvertFromDtoModel(AddAnswerQuestionReq answerQuestions)
         {
             answerQuestion.QuestionId = answerQuestions.QuestionId;
-            answerQuestion.AnswerQuestion1 = answerQuestions.AnswerQuestion1;
+            answerQuestion.Answer = answerQuestions.AnswerQuestion;
             answerQuestion.Score = answerQuestions.Score;
                 
         }
@@ -82,15 +87,18 @@ namespace Project3.Services
                 Score = data.Score,
                 CreatedAt = data.CreatedAt,
                 UpdateAt = data.UpdateAt
-                
             };
             return new BaseResponse(format);
         }
 
-        public BaseResponse getPagin(AnswerQuestionReq filter)
+        public BaseResponse listAnswerQuestion(long idQuestion)
         {
-            var data = _answerQuestionRepo.paginations(filter);
-            return new BaseResponse(data);
+            return new BaseResponse(_answerQuestionRepo.GetAnswerQuestionList(idQuestion));
+        }
+
+        public BaseResponse pagination(AnswerQuestionPageReq answerQuestionReq)
+        {
+            return new BaseResponse(_answerQuestionRepo.pagination(answerQuestionReq));
         }
     }
 }

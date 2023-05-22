@@ -79,9 +79,7 @@ namespace Project3.Repositories
 
         public Blog getOne(long id)
         {
-            var data =  _dbContext.Blogs.Where(r => r.Id == id).First();
-
-            return data;
+            return _dbContext.Blogs.Where(r => r.Id == id).First();
         }
         
         public List<Blog> getBlogList()
@@ -90,6 +88,7 @@ namespace Project3.Repositories
         }
 
         public void deleteBlog(Blog blog)
+
         {
             _dbContext.Blogs.Update(blog);
             _dbContext.SaveChanges();

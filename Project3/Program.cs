@@ -47,12 +47,11 @@ builder.Services.AddScoped<ISecurityService, SecurityService>();
 builder.Services.AddScoped<ICategoryBlogService, CategoryBlogService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISubjectService,  SubjectService>();
 builder.Services.AddScoped<IInformationStudentService, InformationStudentService>();
-builder.Services.AddScoped<IQuestionService, QuestionService>();
-builder.Services.AddScoped<IAnswerQuestionChoseService, AnswerQuestionChoseService>();
-builder.Services.AddScoped<IAnswerQuestionService, AnswerQuestionService>();
 builder.Services.AddScoped<IExamService, ExamService>();
-builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IAnswerQuestionService, AnswerQuestionService>();
 builder.Services.AddScoped<IHistoryExamService, HistoryExamService>();
 #endregion
 
@@ -66,11 +65,10 @@ builder.Services.AddScoped<IRoleRepo, RoleRepo>();
 builder.Services.AddScoped<ISubjectRepo , SubjectRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IUserRoleRepo , UserRoleRepo>();
+builder.Services.AddScoped<IExamRepo,  ExamRepo>(); 
 builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();
-builder.Services.AddScoped<IHistoryExamRepo, HistoryExamRepo>();
-builder.Services.AddScoped<IExamRepo, ExamRepo>();
-builder.Services.AddScoped<IAnswerQuestionChoseRepo, AnswerQuestionChoseRepo>();
 builder.Services.AddScoped<IAnswerQuestionRepo, AnswerQuestionRepo>();
+builder.Services.AddScoped<IAnswerQuestionChoseRepo, AnswerQuestionChoseRepo>();
 #endregion
 // Add Repository
 

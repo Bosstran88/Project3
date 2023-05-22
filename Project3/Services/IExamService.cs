@@ -57,32 +57,24 @@ namespace Project3.Services
         public BaseResponse deleteExam(long id)
         {
             var data = _examRepo.getOne(id);
-            if (data == null)
-            {
-                throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
-            }
-            data.IsDelete = 1;
+            if (data == null) throw new ValidateException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
+            data.IsDelete = Constants.IsDelete.True;
             data.UpdateAt = DateTime.Now;
             _examRepo.deleteExam(data);
-
-            return new BaseResponse();
+            return new BaseResponse(); ;
         }
 
         public BaseResponse getOne(long id)
         {
             var data = _examRepo.getOne(id);
-            if (data == null)
-            {
-                return new BaseResponse();
-            }
-            var format = new VExamOne
+            return new BaseResponse(new VExamOne
             {
                 Id = data.Id,
-                NameExam= data.NameExam,
-                LimitTime = data.LimitTime,
-                CreateAt = data.CreatedAt
-            };
-            return new BaseResponse(format);
+                NameExam = data.NameExam,
+                LimitTime = data.LimitTime, 
+                CreateAt = data.CreatedAt,
+                UpdateAt = data.UpdateAt
+            });
         }
 
         public BaseResponse getPagin(ExamReq filter)

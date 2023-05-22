@@ -36,8 +36,9 @@ namespace Project3.Controllers
 
         [HttpPost("search")]
         public async Task<IActionResult> search([FromBody] ExamReq filter)
-        { 
+        {
             return Ok(_examService.getPagin(filter));
+
         }
 
     }

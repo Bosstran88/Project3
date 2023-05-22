@@ -1,13 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using PagedList;
 using Project3.Entity.Dto;
-using Project3.Entity.Request;
 using Project3.Entity.Response;
 using Project3.Migrations;
 using Project3.Models;
-using System.Data;
 using System.Text;
+using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Project3.Repositories
 {
@@ -17,7 +16,9 @@ namespace Project3.Repositories
         void addOrUpdateAnswerQuestion(AnswerQuestion answerQuestion);
         void deleteAnswerQuestion(AnswerQuestion answerQuestion);
         AnswerQuestion getOne(long id);
-        PageResponse<IPagedList<VAnswerQuestionPagin>> paginations(AnswerQuestionReq filter);
+        List<AnswerQuestion> GetAnswerQuestionList(long idQuestion);
+        PageResponse<IPagedList<VAnswerQuestionRes>> pagination(AnswerQuestionPageReq answerQuestion);
+        int countAnswerOfQuestion(long idQuestion);
     }
 
     public class AnswerQuestionRepo : IAnswerQuestionRepo
@@ -47,49 +48,57 @@ namespace Project3.Repositories
             _dbContext.SaveChanges();
         }
 
+        public int countAnswerOfQuestion(long idQuestion) { 
+            return _dbContext.AnswerQuestions.Where(r => r.QuestionId == idQuestion).Count();
+        }
+
+        // Lấy ra một list câu trả lời của một câu hỏi để học sinh trả lời câu hỏi đó
+        public List<AnswerQuestion> GetAnswerQuestionList(long idQuestion)
+        {
+            return _dbContext.AnswerQuestions.Where(r => r.IsDelete == 0 && r.QuestionId == idQuestion).ToList();
+        }
+
         public List<AnswerQuestion> GetAnswerQuestionList()
         {
-            return _dbContext.AnswerQuestions.Where(r => r.IsDelete == 0).ToList();
+            throw new NotImplementedException();
         }
+
         public AnswerQuestion getOne(long id)
         {
-                var data = _dbContext.AnswerQuestions.Where(r => r.Id == id).First();
-                return data;
+            return _dbContext.AnswerQuestions.Where(r => r.Id == id).First();
         }
 
-        public PageResponse<IPagedList<VAnswerQuestionPagin>> paginations(AnswerQuestionReq filter)
+        public PageResponse<IPagedList<VAnswerQuestionRes>> pagination(AnswerQuestionPageReq answerQuestion) 
         {
             var param = new List<SqlParameter>();
-            StringBuilder data = new StringBuilder("select b.Id,b.AnswerQuestion1,b.Score,b.CreatedAt from AnswerQuestion as b where b.IsDelete = 0 ");
+            var data = new StringBuilder(" select c.Id,c.QuestionId,c.AnswerQuestion,c.Score,c.CreatedAt,c.UpdateAt from AnswerQuestion as c where 1 = 1 ");
+            if(answerQuestion.questionId != null)
+            {
+                data.Append(" and c.QuestionId = @questionId ");
+                param.Add(new SqlParameter("@questionId", SqlDbType.BigInt) { Value = answerQuestion.questionId});
+            }
+            if(!string.IsNullOrEmpty(answerQuestion.nameAnswer)) 
+            {
+                data.Append(" and LOWER(c.AnswerQuestion) LIKE '%' + @answer + '%' ");
+                param.Add(new SqlParameter("@answer" , SqlDbType.NVarChar ) { Value = answerQuestion.nameAnswer });
+            }
 
-            if (!string.IsNullOrEmpty(filter.AnswerQuestion1))
+            var query = _dbContext.Set<AnswerQuestion>().FromSqlRaw(data.ToString(), param.ToArray()).OrderBy(r => r.Answer).ThenByDescending(r => r.CreatedAt).Select(r => new VAnswerQuestionRes
             {
-                data.Append(" and LOWER(b.AnswerQuestion1) LIKE '%' + @answerQuestion1 + '%' ");
-                param.Add(new SqlParameter("@answerQuestion", SqlDbType.NVarChar) { Value = filter.AnswerQuestion1.ToLower() });
-            }
-            if (filter.QuestionId != null)
-            {
-                data.Append(" and b.QuestionId = @questionId");
-                param.Add(new SqlParameter("@questionId", SqlDbType.VarChar) { Value = filter.QuestionId });
-            }
-            var query = _dbContext.Set<AnswerQuestion>().FromSqlRaw(data.ToString(), param.ToArray())
-                .OrderBy(r => r.AnswerQuestion1).ThenByDescending(r => r.CreatedAt)
-                .Select(
-                r => new VAnswerQuestionPagin
-                {
-                    Id = r.Id,
-                    AnswerQuestion1 = r.AnswerQuestion1,
-                    Score = r.Score,
-                    CreatedAt = r.CreatedAt
-                });
+                Id = r.Id,
+                QuestionId = r.QuestionId,
+                AnswerQuestion = r.Answer,
+                Score = r.Score,
+                IsDelete = r.IsDelete,
+                CreatedAt = r.CreatedAt,
+                UpdateAt = r.UpdateAt
+            });
 
             var total = query.Count();
+            var pageData = query.ToPagedList((int)answerQuestion.pageNumber, (int)answerQuestion.pageSize);
+            var pageTotal = Math.Round((decimal)total / (int)answerQuestion.pageSize);
 
-            var pageData = query.ToPagedList((int)filter.pageNumber, (int)filter.pageSize);
-
-            var pageTotal = Math.Round((decimal)total / (int)filter.pageSize);
-
-            return new PageResponse<IPagedList<VAnswerQuestionPagin>>(pageData, (int)filter.pageNumber, (int)filter.pageSize, total, (int)pageTotal);
+            return new PageResponse<IPagedList<VAnswerQuestionRes>>(pageData, (int)answerQuestion.pageNumber, (int)answerQuestion.pageSize , total , (int) pageTotal);
         }
     }
 }
