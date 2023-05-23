@@ -45,6 +45,9 @@ public partial class Project3Context : DbContext
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
+    public virtual DbSet<Address> Addresses { get; set; }
+        
+
     public DbSet<VCategoryBlogs> VCategoryBlogs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

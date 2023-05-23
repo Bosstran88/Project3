@@ -43,6 +43,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 #region Add Service
 builder.Services.AddScoped<IBlogService , BlogService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ISecurityService, SecurityService>();
 builder.Services.AddScoped<ICategoryBlogService, CategoryBlogService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
@@ -53,6 +54,8 @@ builder.Services.AddScoped<IExamService, ExamService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAnswerQuestionService, AnswerQuestionService>();
 builder.Services.AddScoped<IHistoryExamService, HistoryExamService>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 #endregion
 
 #region Add Repository
@@ -69,6 +72,8 @@ builder.Services.AddScoped<IExamRepo,  ExamRepo>();
 builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();
 builder.Services.AddScoped<IAnswerQuestionRepo, AnswerQuestionRepo>();
 builder.Services.AddScoped<IAnswerQuestionChoseRepo, AnswerQuestionChoseRepo>();
+builder.Services.AddScoped<IAddressRepo, AddressRepo>();
+builder.Services.AddScoped<IHistoryExamRepo, HistoryExamRepo>();
 #endregion
 // Add Repository
 

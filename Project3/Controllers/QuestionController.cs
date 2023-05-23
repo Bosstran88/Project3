@@ -9,9 +9,9 @@ namespace Project3.Controllers
     [ApiController]
     public class QuestionController : ControllerBase
     {
-        IQuestionService questionService;
+        IQuestionService _questionService;
 
-        public QuestionController(IQuestionService _questionService)
+        public QuestionController(IQuestionService questionService)
         {
             questionService = _questionService;
         }
@@ -19,19 +19,19 @@ namespace Project3.Controllers
         [HttpPost("createOrUpdate")]
         public async Task<IActionResult> createorUpdate([FromBody] AddQuestionReq? menuReq)
         {
-            return Ok(questionService.createOrUpdate(menuReq));
+            return Ok(_questionService.createOrUpdate(menuReq));
         }
 
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> getById(long id)
         {
-            return Ok(questionService.getOne(id));
+            return Ok(_questionService.getOne(id));
         }
 
         [HttpDelete("deleteById/{menuId}")]
         public async Task<IActionResult> deletebyId(long menuId)
         {
-            return Ok(questionService.deleteQuestion(menuId));
+            return Ok(_questionService.deleteQuestion(menuId));
         }
 
         [HttpPost("search")]
