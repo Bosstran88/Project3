@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Project3.Models;
 
 public partial class InformationStudent
 {
+    [Key]
     public long Id { get; set; }
 
     public string? FullName { get; set; }

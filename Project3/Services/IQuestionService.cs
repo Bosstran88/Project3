@@ -11,17 +11,19 @@ namespace Project3.Services
     {
         BaseResponse getOne(long id);
         BaseResponse deleteQuestion(long id);
+        BaseResponse getPagin(QuestionReq filter);
         BaseResponse createOrUpdate(AddQuestionReq questionReq);
+        BaseResponse pagination(QuestionReq req);
     }
     public class QuestionService : IQuestionService
     {
         IQuestionRepo _questionRepo;
         Question question;
 
-        public QuestionService(IQuestionRepo questionRepo, Question question)
+        public QuestionService(IQuestionRepo questionRepo)
+
         {
             _questionRepo = questionRepo;
-            this.question = question;
         }
 
         public BaseResponse createOrUpdate(AddQuestionReq questionReq)
@@ -30,6 +32,7 @@ namespace Project3.Services
             {
                 this.question = new Question();
                 this.question.IsDelete = Constants.IsDelete.False;
+                this.question.CreatedAt = DateTime.Now;
             }
             else
             {
@@ -79,6 +82,11 @@ namespace Project3.Services
                 NameQuestion = data.NameQuestion
             };
             return new BaseResponse(format);
+        }
+
+        public BaseResponse pagination(QuestionReq req)
+        {
+            return new BaseResponse(_questionRepo.pagination(req));
         }
     }
 }

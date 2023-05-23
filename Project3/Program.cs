@@ -43,13 +43,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 #region Add Service
 builder.Services.AddScoped<IBlogService , BlogService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ISecurityService, SecurityService>();
 builder.Services.AddScoped<ICategoryBlogService, CategoryBlogService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISubjectService,  SubjectService>();
+builder.Services.AddScoped<IInformationStudentService, InformationStudentService>();
+builder.Services.AddScoped<IExamService, ExamService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IAnswerQuestionService, AnswerQuestionService>();
+builder.Services.AddScoped<IHistoryExamService, HistoryExamService>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 #endregion
 
 #region Add Repository
+builder.Services.AddScoped<IInformationStudentRepo, InformationStudentRepo>();
 builder.Services.AddScoped<IBlogRepo , BlogRepo>();
 builder.Services.AddScoped<ICategoryBlogRepo, CategoryBlogRepo>();
 builder.Services.AddScoped<ICourseRepo , CourseRepo>();
@@ -58,8 +68,15 @@ builder.Services.AddScoped<IRoleRepo, RoleRepo>();
 builder.Services.AddScoped<ISubjectRepo , SubjectRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IUserRoleRepo , UserRoleRepo>();
+builder.Services.AddScoped<IExamRepo,  ExamRepo>(); 
+builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();
+builder.Services.AddScoped<IAnswerQuestionRepo, AnswerQuestionRepo>();
+builder.Services.AddScoped<IAnswerQuestionChoseRepo, AnswerQuestionChoseRepo>();
+builder.Services.AddScoped<IAddressRepo, AddressRepo>();
+builder.Services.AddScoped<IHistoryExamRepo, HistoryExamRepo>();
 #endregion
 // Add Repository
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

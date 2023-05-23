@@ -45,16 +45,15 @@ namespace Project3.Repositories
         public PageResponse<IPagedList<VBlogPagin>> paginations(BlogReq filter)
         {
             var param = new List<SqlParameter>();
-            StringBuilder data = new StringBuilder("select b.Id,b.Title,b.CategoryId,b.CreatedAt from Blogs as b\r\nwhere b.IsDelete = 0 ");
+            StringBuilder data = new StringBuilder("select b.Id,b.Title,b.CategoryId,b.CreatedAt from Blogs as b where b.IsDelete = 0 ");
 
             if(!string.IsNullOrEmpty(filter.title))
             {
-                data.Append(" and LOWER(b.Title) LIKE '%' + LOWER(@title) + '%' OR b.Title = '' ");
-                param.Add(new SqlParameter("title",SqlDbType.NVarChar ) { Value = filter.title});
+                data.Append(" and LOWER(b.Title) LIKE '%' + @title + '%' ");
+                param.Add(new SqlParameter("@title",SqlDbType.NVarChar ) { Value = filter.title.ToLower() });
             }
             if(filter.categoryId != null)
             {
-                
                 data.Append(" and b.CategoryId = @categoryId");
                 param.Add(new SqlParameter("@categoryId", SqlDbType.VarChar) { Value = filter.categoryId });
             }
@@ -78,14 +77,9 @@ namespace Project3.Repositories
             return new PageResponse<IPagedList<VBlogPagin>>(pageData, (int)filter.pageNumber, (int)filter.pageSize, total,(int) pageTotal);
         }
 
-
-        //////////////////  SỬA LẠI HÀM PAGIN BLOG 
-
         public Blog getOne(long id)
         {
-            var data =  _dbContext.Blogs.Where(r => r.Id == id).First();
-
-            return data;
+            return _dbContext.Blogs.Where(r => r.Id == id).First();
         }
         
         public List<Blog> getBlogList()
@@ -94,6 +88,7 @@ namespace Project3.Repositories
         }
 
         public void deleteBlog(Blog blog)
+
         {
             _dbContext.Blogs.Update(blog);
             _dbContext.SaveChanges();

@@ -1,14 +1,12 @@
 ﻿using Project3.Migrations;
 using Project3.Models;
-using System.Reflection.Metadata;
 
 namespace Project3.Repositories
 {
     public interface IHistoryExamRepo
     {
-        List<HistoryExam> GetHistoryExamList();
-        void addOrUpdateHistotyExams(HistoryExam historyExam);
-        void deleteHistoryExam(HistoryExam historyExam);
+        List<HistoryExam> GetHistoryExamList(long userId);
+        void add(HistoryExam historyExam);
         HistoryExam getOne(long id);
     }
     public class HistoryExamRepo : IHistoryExamRepo
@@ -20,33 +18,20 @@ namespace Project3.Repositories
             _dbContext = dbContext;
         }
 
-        public void addOrUpdateHistotyExams(HistoryExam historyExam)
+        public void add(HistoryExam historyExam)
         {
-            if(historyExam.Id == null)
-            {
-                _dbContext.HistoryExams.Add(historyExam);
-            }
-            else
-            {
-                _dbContext.HistoryExams.Update(historyExam);
-            }
+            _dbContext.HistoryExams.Add(historyExam);
             _dbContext.SaveChanges();
         }
 
-        public void deleteHistoryExam(HistoryExam historyExam)
+        public List<HistoryExam> GetHistoryExamList(long userId)
         {
-            _dbContext.HistoryExams.Update(historyExam);
-            _dbContext.SaveChanges();
-        }
-
-        public List<HistoryExam> GetHistoryExamList()
-        {
-            return _dbContext.Set<HistoryExam>().ToList();
+            return _dbContext.HistoryExams.Where(r => r.InfostudentId == userId).ToList();
         }
 
         public HistoryExam getOne(long id)
         {
-            return _dbContext.Set<HistoryExam>().FirstOrDefault(e => e.Id == id);
+            return _dbContext.HistoryExams.FirstOrDefault(e => e.Id == id);
         }
     }
 }

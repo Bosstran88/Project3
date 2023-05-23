@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Project3.Entity.Dto;
 using Project3.Entity.Request;
 using Project3.Services;
 
@@ -21,7 +22,7 @@ namespace Project3.Controllers
             return Ok(_answerQuestionService.createOrUpdate(menuReq));
         }
 
-        [HttpGet("getById/{Id}")]
+        [HttpGet("getById/{id}")]
         public async Task<IActionResult> getById(long id)
         {
             return Ok(_answerQuestionService.getOne(id));
@@ -34,9 +35,9 @@ namespace Project3.Controllers
         }
 
         [HttpPost("search")]
-        public async Task<IActionResult> search([FromBody] AnswerQuestionReq filter)
+        public async Task<IActionResult> search([FromBody] AnswerQuestionPageReq filter)
         {
-            return Ok(_answerQuestionService.getPagin(filter));
+            return Ok(_answerQuestionService.pagination(filter));
         }
     }
 }

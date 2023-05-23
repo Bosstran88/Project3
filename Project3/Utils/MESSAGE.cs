@@ -23,6 +23,14 @@
             public const string ROLE_NOT_FOUND = "không tìm thấy role này";
 
             public const string USER_NOT_FOUND = "không tìm thấy user này";
+
+            // CategoryBlog
+            public const string CategoryBlogId_NOT_FOUND = "Không tìm thấy Id của CategoryBlog!!!";
+
+            //Infostudent 
+            public const string UNQUE_EMAIL = "Email này đã tồn tại !!!";
+
+            public const string ANSWER_QUESTION_NOT_BIG_THAN_4 = "Câu trả lời đã vượt quá số lượng add thêm vui lòng xóa câu trả lời hoặc cập nhập lại câu trả lời !!";
         }
 
         public class STATUS_RESPONSE

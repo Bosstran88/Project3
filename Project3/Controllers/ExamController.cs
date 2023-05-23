@@ -22,7 +22,7 @@ namespace Project3.Controllers
             return Ok(_examService.createOrUpdate(menuReq));
         }
 
-        [HttpGet("getById/{Id}")]
+        [HttpGet("getById/{id}")]
         public async Task<IActionResult> getById(long id)
         {
             return Ok(_examService.getOne(id));
@@ -38,6 +38,7 @@ namespace Project3.Controllers
         public async Task<IActionResult> search([FromBody] ExamReq filter)
         {
             return Ok(_examService.getPagin(filter));
+
         }
 
     }

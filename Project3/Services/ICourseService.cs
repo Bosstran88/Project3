@@ -12,6 +12,7 @@ namespace Project3.Services
         BaseResponse getOne(long id);
         BaseResponse deleteCourse(long id);
         BaseResponse createOrUpdate(AddCourseReq addCourseReq);
+        BaseResponse pagination(CourseSearchReq filter);
     }
     public class CourseService : ICourseService
     {
@@ -83,6 +84,11 @@ namespace Project3.Services
                 CreatedAt = data.CreatedAt
             };
             return new BaseResponse(format);
+        }
+
+        public BaseResponse pagination(CourseSearchReq filter)
+        {
+            return new BaseResponse(_courseRepo.pagination(filter));
         }
     }
 }

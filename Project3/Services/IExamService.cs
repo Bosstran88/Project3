@@ -12,6 +12,7 @@ namespace Project3.Services
         BaseResponse getOne(long id);
         BaseResponse deleteExam(long id);
         BaseResponse createOrUpdate(AddExamReq examReq);
+        BaseResponse getPagin(ExamReq filter);
     }
 
     public class ExamService : IExamService
@@ -26,6 +27,7 @@ namespace Project3.Services
 
         public BaseResponse createOrUpdate(AddExamReq examReq)
         {
+            Exam exam;
             if(examReq.Id == null)
             {
                 this.exam = new Exam();
@@ -54,12 +56,31 @@ namespace Project3.Services
 
         public BaseResponse deleteExam(long id)
         {
-            throw new NotImplementedException();
+            var data = _examRepo.getOne(id);
+            if (data == null) throw new ValidateException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
+            data.IsDelete = Constants.IsDelete.True;
+            data.UpdateAt = DateTime.Now;
+            _examRepo.deleteExam(data);
+            return new BaseResponse(); ;
         }
 
         public BaseResponse getOne(long id)
         {
-            throw new NotImplementedException();
+            var data = _examRepo.getOne(id);
+            return new BaseResponse(new VExamOne
+            {
+                Id = data.Id,
+                NameExam = data.NameExam,
+                LimitTime = data.LimitTime, 
+                CreateAt = data.CreatedAt,
+                UpdateAt = data.UpdateAt
+            });
+        }
+
+        public BaseResponse getPagin(ExamReq filter)
+        {
+            var data = _examRepo.paginations(filter);
+            return new BaseResponse(data);
         }
     }
 }

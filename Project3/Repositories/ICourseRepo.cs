@@ -1,6 +1,14 @@
-﻿using Project3.Migrations;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using PagedList;
+using Project3.Entity.Dto;
+using Project3.Entity.Request;
+using Project3.Entity.Response;
+using Project3.Migrations;
 using Project3.Models;
-using System.Reflection.Metadata;
+using Project3.Utils;
+using System.Data;
+using System.Text;
 
 namespace Project3.Repositories
 {
@@ -11,6 +19,7 @@ namespace Project3.Repositories
         void deleteCourseRepo(Course course);
         Course getOne(long id);
         bool exitByNameCourse(string nameCourse);
+        PageResponse<IPagedList<VCourseRes>> pagination(CourseSearchReq filter);
     }
     public class CourseRepo : ICourseRepo
     {
@@ -41,7 +50,7 @@ namespace Project3.Repositories
 
         public bool exitByNameCourse(string nameCourse)
         {
-            return _dbContext.Courses.Any(r => r.CoursesName == nameCourse);    
+            return _dbContext.Courses.Any(r => r.CoursesName == nameCourse && r.IsDelete == Constants.IsDelete.False);
         }
 
         public List<Course> GetCourseList()
@@ -54,6 +63,47 @@ namespace Project3.Repositories
             var data = _dbContext.Courses.Where(r => r.Id == id).First();
 
             return data;
+        }
+
+        public PageResponse<IPagedList<VCourseRes>> pagination(CourseSearchReq filter)
+        {
+            var param = new List<SqlParameter>();
+            StringBuilder data = new StringBuilder(" c.Id,c.CoursesName,c.TotalTime,c.IsSale,c.level,c.CreatedAt,c.UpdateAt from Courses as c\r\n where c.IsDelete = 0 ");
+            if (!string.IsNullOrEmpty(filter.title))
+            {
+                data.Append(" and LOWER(c.CoursesName) LIKE '%' + @name + '%' ");
+                param.Add(new SqlParameter("@name", SqlDbType.NVarChar) { Value = filter.title.ToLower() });
+            }
+            if (filter.isSale != null)
+            {
+                data.Append(" and c.IsSale = @sale ");
+                param.Add(new SqlParameter("@sale", SqlDbType.Int) { Value = filter.isSale });
+            }
+            if (filter.fromTime != null && filter.toTime != null)
+            {
+                data.Append(" and c.CreatedAt >= @createFrom and c.CreatedAt <= @createTo ");
+                param.Add(new SqlParameter("@createFrom", SqlDbType.DateTime) { Value = filter.fromTime });
+                param.Add(new SqlParameter("@createTo", SqlDbType.DateTime) { Value = filter.toTime });
+            }
+            var query = _dbContext.Set<Course>().FromSqlRaw(data.ToString(), param.ToArray()).OrderBy(r => r.CoursesName).ThenByDescending(r => r.CreatedAt)
+                .Select(r => new VCourseRes
+                {
+                    Id = r.Id,
+                    CoursesName = r.CoursesName,
+                    TotalTime = r.TotalTime,
+                    IsSale = r.IsSale,
+                    Level = r.Level,
+                    CreatedAt = r.CreatedAt,
+                    UpdateAt = r.UpdateAt
+
+                });
+            var total = query.Count();
+
+            var pageData = query.ToPagedList((int)filter.pageNumber, (int)filter.pageSize);
+
+            var pageTotal = Math.Round((decimal)total / (int)filter.pageSize);
+
+            return new PageResponse<IPagedList<VCourseRes>>(pageData, (int)filter.pageNumber, (int)filter.pageSize, total, (int)pageTotal);
         }
 
     }

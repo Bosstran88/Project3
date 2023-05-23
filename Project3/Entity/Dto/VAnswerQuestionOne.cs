@@ -2,7 +2,7 @@
 {
     public class VAnswerQuestionOne
     {
-        public long Id { get; set; }
+        public long? Id { get; set; }
 
         public long? QuestionId { get; set; }
 

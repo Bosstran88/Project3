@@ -10,52 +10,21 @@ namespace Project3.Services
     public interface IAnswerQuestionChoseService
     {
         BaseResponse getOne(long id);
-       
-        BaseResponse createOrUpdate(AddAnswerQuestionChoseReq answerQuestionChoseReq);
-
-        BaseResponse deleteAnswerQuestionChose(long id);
+        BaseResponse create(RequestAnswerReq answerQuestionChoseReq);        
     }
     public class AnswerQuestionChoseService : IAnswerQuestionChoseService
     {
         IAnswerQuestionChoseRepo _answerQuestionChoseRepo;
         AnswerQuestionChose answerQuestionChose;
 
-        public AnswerQuestionChoseService(IAnswerQuestionChoseRepo answerQuestionChoseRepo, AnswerQuestionChose answerQuestionChose)
+        public AnswerQuestionChoseService(IAnswerQuestionChoseRepo answerQuestionChoseRepo)
         {
             _answerQuestionChoseRepo = answerQuestionChoseRepo;
-            this.answerQuestionChose = answerQuestionChose;
         }
 
-        public BaseResponse createOrUpdate(AddAnswerQuestionChoseReq answerQuestionChoseReq)
+        public BaseResponse create(RequestAnswerReq req)
         {
-            if(answerQuestionChoseReq.Id == null)
-            {
-                this.answerQuestionChose = new AnswerQuestionChose();
-                this.answerQuestionChose.CreatedAt = DateTime.Now;
-            }
-            else
-            {
-                this.answerQuestionChose = _answerQuestionChoseRepo.getOne((long)answerQuestionChoseReq.Id);
-                if(this.answerQuestionChose == null)
-                {
-                    throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
-                }
-             
-            }
-            _answerQuestionChoseRepo.createOrUpdateAnswerQuestionChose(this.createOrUpdate);
-            return new BaseResponse();
-        }
-
-        public BaseResponse deleteAnswerQuestionChose(long id)
-        {
-            var data = _answerQuestionChoseRepo.getOne(id);
-            if (data == null)
-            {
-                throw new DataNotFoundException(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
-            }
-            
-            _answerQuestionChoseRepo.deleteAnswerQuestionChose(data);
-
+            _answerQuestionChoseRepo.create(req.answer);
             return new BaseResponse();
         }
 
@@ -70,7 +39,7 @@ namespace Project3.Services
             {
                 Id = data.Id,
                 QuestionId = data.QuestionId,
-                AnswerChose =data.AnswerChose,
+                AnswerChoseId =data.AnswerChoseId,
                 HistoryExamId = data.HistoryExamId,
                 CreatedAt = data.CreatedAt
             };
