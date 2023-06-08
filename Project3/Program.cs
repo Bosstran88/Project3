@@ -87,6 +87,11 @@ builder.Services.AddScoped<IExamService, ExamService>();
 builder.Services.AddScoped<IExamRepo, ExamRepo>();
 #endregion
 
+#region History Exam
+builder.Services.AddScoped<IHistoryExamRepo, HistoryExamRepo>();
+builder.Services.AddScoped<IHistoryExamService, HistoryExamService>();
+#endregion
+
 #region Question
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();

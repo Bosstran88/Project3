@@ -2,7 +2,8 @@
 {
     public class AdminInfoResponse
     {
-        public long? Id { get; set; }
-        public string? UserName { get; set; }
+        public long? id { get; set; }
+        public string? userName { get; set; }
+        public string? roleName { get;set; }
     }
 }

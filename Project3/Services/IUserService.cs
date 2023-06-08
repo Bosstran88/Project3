@@ -46,11 +46,13 @@ namespace Project3.Services
             if(authen.RoleName == MESSAGE.VALIDATE.ROLE_USER)
             {
                 var data = userRepo.getInfoUser((long)authen.Id);
+                data.roleName = authen.RoleName;
                 return new BaseResponse(data);
             }
             else
             {
                 var data = userRepo.getInfoAdmin((long)authen.Id);
+                data.roleName = authen.RoleName;
                 return new BaseResponse(data);
             }
         }
@@ -82,27 +84,27 @@ namespace Project3.Services
         {
             if (string.IsNullOrEmpty(loginUser.Username))
             {
-                throw new AuthenException();
+                throw new AuthenException(MESSAGE.VALIDATE.AUTHEN);
             }
             if(string.IsNullOrEmpty(loginUser.Password))
             {
-                throw new AuthenException();
+                throw new AuthenException(MESSAGE.VALIDATE.AUTHEN);
             }
             this.user = null;
             this.user = userRepo.getUserByName(loginUser.Username);
             if(user == null)
             {
-                throw new AuthenException();
+                throw new AuthenException(MESSAGE.VALIDATE.AUTHEN);
             }
             var userRole = userRoleRepo.GetUserRoleById(this.user.Id); 
             if(userRole == null)
             {
-                throw new AuthenException();
+                throw new AuthenException(MESSAGE.VALIDATE.AUTHEN);
             }
             var role = roleRepo.GetRoleById((long)userRole.RoleId);
             if(role == null)
             {
-                throw new AuthenException();
+                throw new AuthenException(MESSAGE.VALIDATE.AUTHEN);
             }
             bool checkPass = securityService.verifyPasswordHash(loginUser.Password , this.user.PasswordHash, this.user.PasswordSalt);
             if(checkPass)
@@ -111,14 +113,14 @@ namespace Project3.Services
                 DateTime today = DateTime.Now;
                 return new BaseResponse(new ResponseTokenDto(token, today, today.AddDays(1)));
             }
-            throw new AuthenException();
+            throw new AuthenException(MESSAGE.VALIDATE.AUTHEN);
         }
 
         public BaseResponse register(RegisterReq registerUser)
         {
             if (userRepo.UserExistsByUsername(registerUser.Username))
             {
-                throw new ValidateException(MESSAGE.VALIDATE.REGISTER_USERNAME);
+                throw new AuthenException(MESSAGE.VALIDATE.REGISTER_FAIL);
             }
             this.user = new User();
             var pass = securityService.createPasswordHash(registerUser.Password);
@@ -132,9 +134,13 @@ namespace Project3.Services
                 this.role = roleRepo.FindByName(registerUser.role);
                 if (this.role == null)
                 {
-                    throw new ValidateException(MESSAGE.VALIDATE.ROLE_NOT_FOUND);
+                    throw new AuthenException(MESSAGE.VALIDATE.REGISTER_FAIL);
                 }
-
+                this.user.UserRoles = new List<UserRole>(){
+                new UserRole()
+                {
+                    Role = this.role
+                }};
                 userRepo.AddUser(this.user);
             }
             else
@@ -142,13 +148,17 @@ namespace Project3.Services
                 this.role = roleRepo.FindByName(MESSAGE.VALIDATE.ROLE_USER);
                 if (this.role == null)
                 {
-                    throw new ValidateException(MESSAGE.VALIDATE.ROLE_NOT_FOUND);
+                    throw new AuthenException(MESSAGE.VALIDATE.REGISTER_FAIL);
                 }
                 this.user.UserRoles = new List<UserRole>(){
                 new UserRole()
                 {
                     Role = this.role
                 }};
+                if (studentRepo.exitIdCardStudent(registerUser.idCardStudent))
+                {
+                    throw new AuthenException(MESSAGE.VALIDATE.REGISTER_FAIL);
+                }
                 this.student = new InformationStudent();
                 this.student.IdCardStudent = registerUser.idCardStudent;
                 this.student.FullName = registerUser.fullName;

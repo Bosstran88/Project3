@@ -2,9 +2,10 @@
 {
     public class UserInfoResponse
     {
-        public string? FullName { get; set; }
-        public string? IdCardStudent { get; set; }
-        public string? Email { get; set; }
-        public DateTime? CreateAt { get; set; }
+        public string? fullName { get; set; }
+        public string? idCardStudent { get; set; }
+        public string? email { get; set; }
+        public DateTime? createAt { get; set; }
+        public string roleName { get; set; }
     }
 }

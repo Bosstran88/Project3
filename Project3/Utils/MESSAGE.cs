@@ -4,6 +4,7 @@
     {
         public class VALIDATE
         {
+            public const string AUTHEN = "Tài khoản hoặc mật khẩu không chính xác";
             public const string INPUT_INVALID = "Invalid input";
 
             public const string OBJECT_NOT_FOUND = "không tìm thấy dữ liệu object này";

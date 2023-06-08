@@ -41,10 +41,10 @@ namespace Project3.Controllers
             return Ok(_questionService.getListByExamId(id));
         }
 
-        [HttpGet("startExam/{id}")]
-        public IActionResult startExam(long id)
+        [HttpPost("startExam")]
+        public IActionResult startExam(StartExamReq req)
         {
-            return Ok(_questionService.startExam(id));
+            return Ok(_questionService.startExam(req));
         }
 
         [HttpPost("search")]

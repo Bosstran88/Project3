@@ -18,11 +18,12 @@ namespace Project3.Services
     public class InformationStudentService : IInformationStudentService
     {
         IInformationStudentRepo inforRepo;
-        IQuestionRepo questionRepo;
+        IUserRepo userRepo;
 
-        public InformationStudentService(IInformationStudentRepo _inforRepo)
+        public InformationStudentService(IInformationStudentRepo _inforRepo, IUserRepo _userRepo)
         {
             inforRepo = _inforRepo;
+            userRepo = _userRepo;
         }
 
         public BaseResponse deleteAcount(long id)
@@ -76,23 +77,36 @@ namespace Project3.Services
         }
 
         public BaseResponse getOne(long id)
-        {
-            var data = inforRepo.getOne(id);
-            return new BaseResponse(new VInfomationStudent
+        { 
+            var dataAcc = userRepo.getOne(id);
+            var newAcc = new UserRes
             {
-                id = data.Id,
-                fullName = data.FullName,
-                DateBirth = data.DateBirth,
-                idCardStudent = data.IdCardStudent,
-                wasBorn = data.WasBorn,
-                identityCard = data.IdentityCard,
-                startCard = data.StartCard,
-                endCard = data.EndCard,
-                fromCard = data.FromCard,
-                status = data.Status,
-                email = data.Email,
-                createAt = data.CreatedAt,
-                updatedAt = data.UpdateAt,
+                Id = dataAcc.Id,
+                UserName = dataAcc.UserName,
+                CreatedAt = dataAcc.CreatedAt,
+                UpdateAt = dataAcc.UpdateAt
+            };
+            var dataInfor = inforRepo.getOne(id);
+            var newInfo = new VInfomationStudent
+            {
+                id = dataInfor.Id,
+                fullName = dataInfor.FullName,
+                DateBirth = dataInfor.DateBirth,
+                idCardStudent = dataInfor.IdCardStudent,
+                wasBorn = dataInfor.WasBorn,
+                identityCard = dataInfor.IdentityCard,
+                startCard = dataInfor.StartCard,
+                endCard = dataInfor.EndCard,
+                fromCard = dataInfor.FromCard,
+                status = dataInfor.Status,
+                email = dataInfor.Email,
+                createAt = dataInfor.CreatedAt,
+                updatedAt = dataInfor.UpdateAt,
+            };
+            return new BaseResponse(new detailAccountStudentResponse
+            {
+                accountStudent = newAcc,
+                infoStudetn = newInfo
             });
         }
 

@@ -14,17 +14,19 @@ namespace Project3.Services
         BaseResponse createOrUpdate(AddQuestionReq questionReq);
         BaseResponse pagination(QuestionReq req);
         BaseResponse getListByExamId(long id);
-        BaseResponse startExam(long id);
+        BaseResponse startExam(StartExamReq req);
     }
     public class QuestionService : IQuestionService
     {
         IQuestionRepo _questionRepo;
+        IHistoryExamRepo _historyExamRepo;
         Question question;
 
-        public QuestionService(IQuestionRepo questionRepo)
+        public QuestionService(IQuestionRepo questionRepo, IHistoryExamRepo historyExamRepo)
 
         {
             _questionRepo = questionRepo;
+            _historyExamRepo = historyExamRepo;
         }
 
         public BaseResponse createOrUpdate(AddQuestionReq questionReq)
@@ -99,9 +101,24 @@ namespace Project3.Services
             return new BaseResponse(data);
         }
 
-        public BaseResponse startExam(long id)
+        public BaseResponse startExam(StartExamReq req)
         {
-            return new BaseResponse(_questionRepo.startExams(id));
+            int hours = req.totalTime / 60;
+            int minutes = req.totalTime % 60;
+            DateTime currentTime = DateTime.Now;
+            DateTime endTime = DateTime.Now;
+            endTime.AddHours(hours);
+            endTime.AddMinutes(minutes);
+            var dto = new HistoryExam();
+            dto.ExamId = req.idExam;
+            dto.StartTime = currentTime;
+            dto.EndTime = endTime;
+            dto.InformationStudentId = req.idStudent;
+            return new BaseResponse(new InfoAllOfStarExamRespon
+            {
+                examInfo = _historyExamRepo.startExam(dto),
+                questionInfo = _questionRepo.startExams(req.idExam)
+            }); ;
         }
     }
 }

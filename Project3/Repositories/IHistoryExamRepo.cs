@@ -10,6 +10,7 @@ namespace Project3.Repositories
         void addOrUpdate(HistoryExam historyExam);
         HistoryExam getOne(long id);
         HistoryExam findByInformationStudentIdAdnExamId(long studentInfoId, long ExamId);
+        HistoryExam startExam(HistoryExam historyExam);
     }
     public class HistoryExamRepo : IHistoryExamRepo
     {
@@ -47,6 +48,13 @@ namespace Project3.Repositories
         public HistoryExam getOne(long id)
         {
             return _dbContext.HistoryExams.Where(e => e.Id == id).FirstOrDefault();
+        }
+
+        public HistoryExam startExam(HistoryExam historyExam)
+        {
+            _dbContext.HistoryExams.Add(historyExam);
+            _dbContext.SaveChanges();
+            return historyExam;
         }
     }
 }
