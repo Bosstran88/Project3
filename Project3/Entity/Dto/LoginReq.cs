@@ -6,5 +6,6 @@ namespace Project3.Entity.Dto
     {
         public string Username { get; set; }
         public string Password { get; set; }
+        public string? role { get;set; }
     }
 }

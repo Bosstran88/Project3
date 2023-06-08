@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project3.Entity.Request;
 using Project3.Services;
 
@@ -8,14 +9,14 @@ namespace Project3.Controllers
     [ApiController]
     public class AnswerQuestionChoseController : ControllerBase
     {
-        AnswerQuestionChoseService _service;
+        IAnswerQuestionChoseService _service;
 
-        public AnswerQuestionChoseController(AnswerQuestionChoseService service)
+        public AnswerQuestionChoseController(IAnswerQuestionChoseService service)
         {
             _service = service;
         }
 
-        [HttpPost("/createAnswer")]
+        [HttpPost("/createAnswer") , Authorize]
         public IActionResult creat([FromBody] RequestAnswerReq req)
         {
             return Ok(_service.create(req));

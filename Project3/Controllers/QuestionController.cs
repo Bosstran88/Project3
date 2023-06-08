@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Entity.Request;
 using Project3.Services;
@@ -16,7 +17,7 @@ namespace Project3.Controllers
             _questionService = questionService;
         }
 
-        [HttpPost("createOrUpdate")]
+        [HttpPost("createOrUpdate"), Authorize]
         public async Task<IActionResult> createorUpdate([FromBody] AddQuestionReq? menuReq)
         {
             return Ok(_questionService.createOrUpdate(menuReq));
@@ -32,6 +33,18 @@ namespace Project3.Controllers
         public async Task<IActionResult> deletebyId(long menuId)
         {
             return Ok(_questionService.deleteQuestion(menuId));
+        }
+
+        [HttpGet("list/{id}")]
+        public IActionResult getList(long id)
+        {
+            return Ok(_questionService.getListByExamId(id));
+        }
+
+        [HttpPost("startExam")]
+        public IActionResult startExam(StartExamReq req)
+        {
+            return Ok(_questionService.startExam(req));
         }
 
         [HttpPost("search")]

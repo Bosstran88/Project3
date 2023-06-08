@@ -17,8 +17,7 @@ namespace Project3.Repositories
         InformationStudent getOne(long id);
         bool exitByEmail(string email);
         bool exitIdCardStudent(string idCardStudent);
-
-        //Xóa cái AddOrUpdate đi
+        InformationStudent findByIdCardStudent(string IdCardStudent);
         void AddInfo(InformationStudent informationStudent);
         void UpdateInfo(InformationStudent informationStudent);
         PageResponse<IPagedList<VInfomationStudent>> pagintions(InfomationStudentReq req);
@@ -113,6 +112,11 @@ namespace Project3.Repositories
 
             return new PageResponse<IPagedList<VInfomationStudent>>(pageData, (int)req.pageNumber, (int)req.pageSize, total, (int)pageTotal);
 
+        }
+
+        public InformationStudent? findByIdCardStudent(string IdCardStudent)
+        {
+            return _dbContext.InformationStudents.Where(r => r.IdCardStudent.Equals(IdCardStudent)).FirstOrDefault();
         }
     }
 }

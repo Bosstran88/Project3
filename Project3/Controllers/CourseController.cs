@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project3.Entity.Request;
 using Project3.Services;
 
@@ -14,7 +15,7 @@ namespace Project3.Controllers
             _svc = svc;
         }
 
-        [HttpPost("update")]
+        [HttpPost("createOrUpdate"), Authorize]
         public async Task<IActionResult> createOrUpdate([FromBody] AddCourseReq addCourseReq)
         {
             return Ok(_svc.createOrUpdate(addCourseReq));
@@ -26,7 +27,7 @@ namespace Project3.Controllers
             return Ok(_svc.getOne(id));
         }
 
-        [HttpDelete("deleteById/{id}")]
+        [HttpDelete("deleteById/{id}"), Authorize]
         public async Task<IActionResult> deleteById(long id)
         {
             return Ok(_svc.deleteCourse(id));

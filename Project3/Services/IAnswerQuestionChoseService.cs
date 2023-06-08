@@ -15,7 +15,6 @@ namespace Project3.Services
     public class AnswerQuestionChoseService : IAnswerQuestionChoseService
     {
         IAnswerQuestionChoseRepo _answerQuestionChoseRepo;
-        AnswerQuestionChose answerQuestionChose;
 
         public AnswerQuestionChoseService(IAnswerQuestionChoseRepo answerQuestionChoseRepo)
         {
@@ -24,7 +23,7 @@ namespace Project3.Services
 
         public BaseResponse create(RequestAnswerReq req)
         {
-            _answerQuestionChoseRepo.create(req.answer);
+            _answerQuestionChoseRepo.create(req);
             return new BaseResponse();
         }
 

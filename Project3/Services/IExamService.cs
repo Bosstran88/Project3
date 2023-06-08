@@ -13,6 +13,7 @@ namespace Project3.Services
         BaseResponse deleteExam(long id);
         BaseResponse createOrUpdate(AddExamReq examReq);
         BaseResponse getPagin(ExamReq filter);
+        BaseResponse getList(ListExamReq filter);
     }
 
     public class ExamService : IExamService
@@ -80,6 +81,12 @@ namespace Project3.Services
         {
             var data = _examRepo.paginations(filter);
             return new BaseResponse(data);
+        }
+
+        public BaseResponse getList(ListExamReq filter)
+        {
+            return new BaseResponse(_examRepo.getExamList(filter));
+
         }
     }
 }

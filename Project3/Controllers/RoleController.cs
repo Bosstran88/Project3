@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Entity.Request;
 using Project3.Services;
@@ -15,7 +16,7 @@ namespace Project3.Controllers
             roleService = _roleService;
         }
 
-        [HttpPost("createOrUpdate")]
+        [HttpPost("createOrUpdate") , Authorize]
         public async Task<IActionResult> createOrUpdate([FromBody] AddRoleReq addRole)
         {
             return Ok(roleService.createOrUpdate(addRole));
@@ -27,7 +28,7 @@ namespace Project3.Controllers
             return Ok(roleService.getOne(Id));
         }
 
-        [HttpDelete("deleteById/{id}")]
+        [HttpDelete("deleteById/{id}") , Authorize]
         public async Task<IActionResult> deleteById(long id)
         {
             return Ok(roleService.deleteById(id));

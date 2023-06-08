@@ -20,6 +20,7 @@ namespace Project3.Repositories
         Course getOne(long id);
         bool exitByNameCourse(string nameCourse);
         PageResponse<IPagedList<VCourseRes>> pagination(CourseSearchReq filter);
+        DetailCourse getById(long id);
     }
     public class CourseRepo : ICourseRepo
     {
@@ -65,10 +66,30 @@ namespace Project3.Repositories
             return data;
         }
 
+        public DetailCourse getById(long id)
+        {
+            var data = _dbContext.Courses.Where(r => r.Id == id && r.IsDelete == 0).FirstOrDefault();
+            if (data == null)
+            {
+                return null;
+            }
+            var subject = _dbContext.Subjects.Where(r => r.CoursesId == id && r.IsDelete == 0).ToList();
+            return new DetailCourse
+            {
+                Id = data.Id,
+                CoursesName = data.CoursesName,
+                TotalTime = data.TotalTime,
+                Level = data.Level,
+                CreatedAt = data.CreatedAt,
+                UpdateAt = data.UpdateAt,
+                Subjects = subject,
+            };
+        }
+
         public PageResponse<IPagedList<VCourseRes>> pagination(CourseSearchReq filter)
         {
             var param = new List<SqlParameter>();
-            StringBuilder data = new StringBuilder(" c.Id,c.CoursesName,c.TotalTime,c.IsSale,c.level,c.CreatedAt,c.UpdateAt from Courses as c\r\n where c.IsDelete = 0 ");
+            StringBuilder data = new StringBuilder(" select c.Id,c.CoursesName,c.TotalTime,c.IsSale,c.level,c.CreatedAt,c.UpdateAt from Courses as c\r\n where c.IsDelete = 0 ");
             if (!string.IsNullOrEmpty(filter.title))
             {
                 data.Append(" and LOWER(c.CoursesName) LIKE '%' + @name + '%' ");

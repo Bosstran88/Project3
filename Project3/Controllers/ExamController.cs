@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Entity.Request;
 using Project3.Services;
@@ -16,7 +17,7 @@ namespace Project3.Controllers
             _examService = examService;
         }
 
-        [HttpPost("createOrUpdate")]
+        [HttpPost("createOrUpdate"), Authorize]
         public async Task<IActionResult> createOrUpdate([FromBody] AddExamReq? menuReq)
         {
             return Ok(_examService.createOrUpdate(menuReq));
@@ -28,7 +29,7 @@ namespace Project3.Controllers
             return Ok(_examService.getOne(id));
         }
 
-        [HttpDelete("deleteById/{menuId}")]
+        [HttpDelete("deleteById/{menuId}"), Authorize]
         public async Task<IActionResult> deleteById(long menuId)
         {
             return Ok(_examService.deleteExam(menuId));
@@ -38,7 +39,13 @@ namespace Project3.Controllers
         public async Task<IActionResult> search([FromBody] ExamReq filter)
         {
             return Ok(_examService.getPagin(filter));
+            
+        }
 
+        [HttpPost("list")]
+        public IActionResult list([FromBody] ListExamReq filter)
+        {
+            return Ok(_examService.getList(filter));
         }
 
     }

@@ -13,16 +13,20 @@ namespace Project3.Services
         BaseResponse deleteQuestion(long id);
         BaseResponse createOrUpdate(AddQuestionReq questionReq);
         BaseResponse pagination(QuestionReq req);
+        BaseResponse getListByExamId(long id);
+        BaseResponse startExam(StartExamReq req);
     }
     public class QuestionService : IQuestionService
     {
         IQuestionRepo _questionRepo;
+        IHistoryExamRepo _historyExamRepo;
         Question question;
 
-        public QuestionService(IQuestionRepo questionRepo)
+        public QuestionService(IQuestionRepo questionRepo, IHistoryExamRepo historyExamRepo)
 
         {
             _questionRepo = questionRepo;
+            _historyExamRepo = historyExamRepo;
         }
 
         public BaseResponse createOrUpdate(AddQuestionReq questionReq)
@@ -85,6 +89,36 @@ namespace Project3.Services
         public BaseResponse pagination(QuestionReq req)
         {
             return new BaseResponse(_questionRepo.pagination(req));
+        }
+
+        public BaseResponse getListByExamId(long id)
+        {
+            var data = _questionRepo.getQuestionList(id);
+            if(data.Count != 10)
+            {
+                throw new Exception(MESSAGE.VALIDATE.TOTAL_QUESTION_INVALID);
+            }
+            return new BaseResponse(data);
+        }
+
+        public BaseResponse startExam(StartExamReq req)
+        {
+            int hours = req.totalTime / 60;
+            int minutes = req.totalTime % 60;
+            DateTime currentTime = DateTime.Now;
+            DateTime endTime = DateTime.Now;
+            endTime.AddHours(hours);
+            endTime.AddMinutes(minutes);
+            var dto = new HistoryExam();
+            dto.ExamId = req.idExam;
+            dto.StartTime = currentTime;
+            dto.EndTime = endTime;
+            dto.InformationStudentId = req.idStudent;
+            return new BaseResponse(new InfoAllOfStarExamRespon
+            {
+                examInfo = _historyExamRepo.startExam(dto),
+                questionInfo = _questionRepo.startExams(req.idExam)
+            }); ;
         }
     }
 }

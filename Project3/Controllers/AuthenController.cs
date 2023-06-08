@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project3.Entity.Dto;
 using Project3.Entity.Request;
 using Project3.Services;
+using Project3.Utils;
 using System.Security.Claims;
 
 namespace Project3.Controllers
@@ -22,7 +23,7 @@ namespace Project3.Controllers
             return Ok(userService.register(registerUser));
         }
 
-        [HttpPost("/loginUser")]
+        [HttpPost("/login")]
         public IActionResult Login([FromBody] LoginReq login)
         {
             return Ok(userService.login(login));
@@ -41,6 +42,18 @@ namespace Project3.Controllers
                 RoleName = roleName
             };
             return Ok(userService.getInfo(data));
+        }
+
+        [HttpPost("search")]
+        public IActionResult search([FromBody] UserPaginReq res)
+        {
+            return Ok(userService.search(res));
+        }
+
+        [HttpGet("detail/{id}")]
+        public IActionResult getOne(long id)
+        {
+            return Ok(userService.getOne(id));
         }
     }
 }
