@@ -12,6 +12,8 @@ namespace Project3.Services
         BaseResponse register(RegisterReq registerUser);
         BaseResponse login(LoginReq loginUser);
         BaseResponse getInfo(AuthenReq authen);
+        BaseResponse search(UserPaginReq res);
+        BaseResponse getOne(long id);
     }
 
     public class UserService : IUserService
@@ -51,6 +53,29 @@ namespace Project3.Services
                 var data = userRepo.getInfoAdmin((long)authen.Id);
                 return new BaseResponse(data);
             }
+        }
+
+        public BaseResponse getOne(long id)
+        {
+            this.user = userRepo.getOne(id);
+            if (user == null)
+            {
+                throw new Exception();
+            }
+            var userRole = userRoleRepo.GetUserRoleById(this.user.Id);
+            if (userRole == null)
+            {
+                throw new Exception();
+            }
+            var role = roleRepo.GetRoleById((long)userRole.RoleId);
+            var res = new userDetailRes
+            {
+                Id = this.user.Id,
+                userName = this.user.UserName,
+                nameRole = role.NameRole,
+                createTime = this.user.CreatedAt
+            };
+            return new BaseResponse(res);
         }
 
         public BaseResponse login(LoginReq loginUser)
@@ -133,6 +158,11 @@ namespace Project3.Services
                 userRepo.registerUser(this.user, this.student);
             }
             return new BaseResponse(MESSAGE.STATUS_RESPONSE.SUCCESS, MESSAGE.VALIDATE.REGISTER_SUCCESS);
+        }
+
+        public BaseResponse search(UserPaginReq res)
+        {
+            return new BaseResponse(userRepo.pagin(res));
         }
     }
 }

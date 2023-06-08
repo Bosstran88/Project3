@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Entity.Request;
 using Project3.Services;
@@ -15,7 +16,7 @@ namespace Project3.Controllers
             _blogService = blogService;
         }
 
-        [HttpPost("createOrUpdate")]
+        [HttpPost("createOrUpdate"), Authorize]
         public async Task<IActionResult> createOrUpdate([FromBody] AddBlogReq? menuReq)
         {
             return Ok(_blogService.createOrUpdate(menuReq));
@@ -27,7 +28,7 @@ namespace Project3.Controllers
             return Ok(_blogService.getOne(Id));
         }
 
-        [HttpDelete("deleteById/{menuId}")]
+        [HttpDelete("deleteById/{menuId}") , Authorize]
         public async Task<IActionResult> deleteById(long menuId)
         {
             return Ok(_blogService.deleteBlog(menuId));

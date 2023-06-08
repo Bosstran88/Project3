@@ -10,11 +10,7 @@ using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container
-
-
-// Autho in Swagger
+#region Swagger
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -40,35 +36,68 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
-
-#region Add Service
-builder.Services.AddScoped<IBlogService , BlogService>();
-builder.Services.AddScoped<ISecurityService, SecurityService>();
-builder.Services.AddScoped<ICategoryBlogService, CategoryBlogService>();
-builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ISubjectService,  SubjectService>();
-builder.Services.AddScoped<IInformationStudentService, InformationStudentService>();
-builder.Services.AddScoped<IExamService, ExamService>();
-builder.Services.AddScoped<IQuestionService, QuestionService>();
-builder.Services.AddScoped<IAnswerQuestionService, AnswerQuestionService>();
 #endregion
 
-#region Add Repository
-builder.Services.AddScoped<IInformationStudentRepo, InformationStudentRepo>();
-builder.Services.AddScoped<IBlogRepo , BlogRepo>();
+#region Blog
+builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<IBlogRepo, BlogRepo>();
+#endregion
+
+#region Security
+builder.Services.AddScoped<ISecurityService, SecurityService>();
+#endregion
+
+#region CategoryBlog
+builder.Services.AddScoped<ICategoryBlogService, CategoryBlogService>();
 builder.Services.AddScoped<ICategoryBlogRepo, CategoryBlogRepo>();
-builder.Services.AddScoped<ICourseRepo , CourseRepo>();
-builder.Services.AddScoped<IInformationStudentRepo , InformationStudentRepo>();
-builder.Services.AddScoped<IRoleRepo, RoleRepo>();  
-builder.Services.AddScoped<ISubjectRepo , SubjectRepo>();
+#endregion 
+
+#region Role
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IRoleRepo, RoleRepo>();
+#endregion
+
+#region User
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
-builder.Services.AddScoped<IUserRoleRepo , UserRoleRepo>();
-builder.Services.AddScoped<IExamRepo,  ExamRepo>(); 
-builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();
+#endregion
+
+#region Subject
+builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<ISubjectRepo, SubjectRepo>();
+#endregion
+
+#region AnswerQuestion
+builder.Services.AddScoped<IAnswerQuestionService, AnswerQuestionService>();
 builder.Services.AddScoped<IAnswerQuestionRepo, AnswerQuestionRepo>();
 #endregion
-// Add Repository
+
+#region AnswerQuestionChose
+builder.Services.AddScoped<IAnswerQuestionChoseService, AnswerQuestionChoseService>();
+builder.Services.AddScoped<IAnswerQuestionChoseRepo, AnswerQuestionChoseRepo>();
+#endregion
+
+#region Infomation
+builder.Services.AddScoped<IInformationStudentService, InformationStudentService>();
+builder.Services.AddScoped<IInformationStudentRepo, InformationStudentRepo>();
+#endregion
+
+#region Exam
+builder.Services.AddScoped<IExamService, ExamService>();
+builder.Services.AddScoped<IExamRepo, ExamRepo>();
+#endregion
+
+#region Question
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();
+#endregion
+
+#region Course
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<ICourseRepo, CourseRepo>();
+#endregion
+
+builder.Services.AddScoped<IUserRoleRepo, UserRoleRepo>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

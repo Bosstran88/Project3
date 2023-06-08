@@ -8,13 +8,12 @@ using Project3.Migrations;
 using Project3.Models;
 using System.Data;
 using System.Text;
-using System.Xml.Linq;
 
 namespace Project3.Repositories
 {
     public interface IExamRepo
     {
-        List<Exam> getExamList();
+        List<VExam> getExamList(ListExamReq filter);
         void addOrUpdateExams(Exam exam);
         void deleteExam(Exam exam);
         Exam getOne(long id);
@@ -41,16 +40,27 @@ namespace Project3.Repositories
             _dbContext.SaveChanges();
         }
 
-
         public void deleteExam(Exam exam)
         {
             _dbContext.Exams.Update(exam);
             _dbContext.SaveChanges();
         }
 
-        public List<Exam> getExamList()
+        public List<VExam> getExamList(ListExamReq filter)
         {
-            return _dbContext.Exams.Where(r => r.IsDelete == 0).ToList();
+            var data = _dbContext.Exams.Where(r => r.IsDelete == 0);
+            if (!string.IsNullOrEmpty(filter.NameExam))
+            {
+                data.Where(r => r.NameExam.ToLower().Contains(filter.NameExam.ToLower()));
+            }
+            var res = data.Select(r => new VExam
+            {
+                Id = r.Id,
+                NameExam = r.NameExam,
+                LimitTime = r.LimitTime,
+                CreatedAt = r.CreatedAt
+            }).ToList();
+            return res;
         }
 
         public Exam getOne(long id)
@@ -77,7 +87,7 @@ namespace Project3.Repositories
                     Id = r.Id,
                     NameExam = r.NameExam,
                     LimitTime = r.LimitTime,
-                    CreatedAt = r.CreatedAt
+                    CreatedAt = r.CreatedAt,
                 });
 
             var total = query.Count();
@@ -86,7 +96,7 @@ namespace Project3.Repositories
 
             var pageTotal = Math.Round((decimal)total / (int)filter.pageSize);
 
-            return new PageResponse<IPagedList<VExamPagin>>(pageData, (int)filter.pageNumber, (int)filter.pageSize, total, (int)total);
+            return new PageResponse<IPagedList<VExamPagin>>(pageData, (int)filter.pageNumber, (int)filter.pageSize, total, (int)pageTotal);
         }
     }
 }

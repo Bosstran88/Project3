@@ -6,6 +6,7 @@ using Project3.Entity.Request;
 using Project3.Entity.Response;
 using Project3.Migrations;
 using Project3.Models;
+using Project3.Utils;
 using System.Data;
 using System.Text;
 
@@ -13,12 +14,13 @@ namespace Project3.Repositories
 {
     public interface IQuestionRepo
     {
-        List<Question> GetQuestionList();
+        List<Question> getQuestionList(long id);
         void addOrUpdateQuestion(Question question);
         void deleteQuestion(Question question);
         Question getOne(long id);
 
         PageResponse<IPagedList<VQuestionRes>> pagination(QuestionReq req);
+        List<startExamQuestionDto> startExams(long exanid);
     }
 
     public class QuestionRepo : IQuestionRepo
@@ -31,7 +33,7 @@ namespace Project3.Repositories
 
         public void addOrUpdateQuestion(Question question)
         {
-            if(question.Id == null)
+            if (question.Id == null)
             {
                 _dbContext.Questions.Add(question);
             }
@@ -55,10 +57,14 @@ namespace Project3.Repositories
             return data;
         }
 
-        public List<Question> GetQuestionList()
+        public List<Question>? getQuestionList(long id)
         {
-            return _dbContext.Questions.Where(r => r.IsDelete ==0).ToList();
-            
+            var data = _dbContext.Questions.Where(r => r.ExamId == id && r.IsDelete == Constants.IsDelete.False).ToList();
+            if (data == null)
+            {
+                throw new Exception(MESSAGE.VALIDATE.OBJECT_NOT_FOUND);
+            }
+            return data;
         }
 
         public PageResponse<IPagedList<VQuestionRes>> pagination(QuestionReq req)
@@ -68,11 +74,17 @@ namespace Project3.Repositories
 
             if (!string.IsNullOrEmpty(req.NameQuestion))
             {
-                data.Append(" and LOWER(rl.NameRole) LIKE '%' + @roleName + '%' ");
+                data.Append(" and LOWER(q.NameQuestion) LIKE '%' + @roleName + '%' ");
                 param.Add(new SqlParameter("@roleName", SqlDbType.NVarChar) { Value = req.NameQuestion.ToLower() });
             }
 
-            var query = _dbContext.Set<Question>().FromSqlRaw(data.ToString())
+            if (req.ExamId != null)
+            {
+                data.Append(" and q.ExamId = @examid ");
+                param.Add(new SqlParameter("@examid", SqlDbType.BigInt) { Value = req.ExamId });
+            }
+
+            var query = _dbContext.Set<Question>().FromSqlRaw(data.ToString(), param.ToArray())
                 .OrderBy(r => r.NameQuestion).ThenByDescending(r => r.CreatedAt)
                 .Select(r => new VQuestionRes
                 {
@@ -91,5 +103,32 @@ namespace Project3.Repositories
 
             return new PageResponse<IPagedList<VQuestionRes>>(pageData, (int)req.pageNumber, (int)req.pageSize, total, (int)pageTotal);
         }
+
+        public List<startExamQuestionDto> startExams(long exanid)
+        {
+            List<startExamQuestionDto> list = new List<startExamQuestionDto>();
+            startExamQuestionDto exq;
+            var data = _dbContext.Questions.Where(r => r.ExamId == exanid && r.IsDelete == Constants.IsDelete.False).ToList();
+            foreach (Question dto in data)
+            {
+                exq = new();
+                var res = _dbContext.AnswerQuestions.Where(r => r.QuestionId == dto.Id && r.IsDelete == Constants.IsDelete.False).Select(r => new VAnswerQuestionOne
+                {
+                    Id = r.Id,
+                    QuestionId = dto.Id,
+                    AnswerQuestion = r.Answer,
+                    Score = r.Score,
+                    CreatedAt = r.CreatedAt,
+                    UpdateAt = r.UpdateAt
+                }).ToList();
+                var context = res.Count;
+                exq.questionId = dto.Id;
+                exq.questionName = dto.NameQuestion;
+                exq.answers = res;
+                list.Add(exq);
+            }
+            return list;
+        }
     }
 }
+

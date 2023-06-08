@@ -2,13 +2,14 @@
 
 public partial class AnswerQuestionChose
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public long? QuestionId { get; set; }
 
     public long? AnswerChoseId { get; set; }
 
     public long? HistoryExamId { get; set; }
+    public int? Score { get;set; }
 
     public DateTime? CreatedAt { get; set; } = DateTime.Now;
     public virtual HistoryExam? HistoryExam { get; set; }

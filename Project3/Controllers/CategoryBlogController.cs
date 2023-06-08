@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project3.Entity.Request;
 using Project3.Services;
@@ -16,19 +17,19 @@ namespace Project3.Controllers
             _categoryBlogService = categoryBlogService;
         }
 
-        [HttpPost("createOrUpdate")]
+        [HttpPost("createOrUpdate"), Authorize]
         public async Task<IActionResult> createOrUpdate([FromBody] AddCategoryBlog? categoryBlog)
         {
             return Ok(_categoryBlogService.createOrUpdate(categoryBlog));
         }
 
-        [HttpGet("getById/{Id}")]
+        [HttpGet("getById/{Id}"), Authorize]
         public async Task<IActionResult> getById(long Id)
         {
             return Ok(_categoryBlogService.getOne(Id));
         }
 
-        [HttpDelete("deleteById/{Id}")]
+        [HttpDelete("deleteById/{Id}"), Authorize]
         public async Task<IActionResult> deleteById(long Id)
         {
             return Ok(_categoryBlogService.deleteCategoy(Id));

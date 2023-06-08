@@ -13,6 +13,8 @@ namespace Project3.Services
         BaseResponse deleteQuestion(long id);
         BaseResponse createOrUpdate(AddQuestionReq questionReq);
         BaseResponse pagination(QuestionReq req);
+        BaseResponse getListByExamId(long id);
+        BaseResponse startExam(long id);
     }
     public class QuestionService : IQuestionService
     {
@@ -85,6 +87,21 @@ namespace Project3.Services
         public BaseResponse pagination(QuestionReq req)
         {
             return new BaseResponse(_questionRepo.pagination(req));
+        }
+
+        public BaseResponse getListByExamId(long id)
+        {
+            var data = _questionRepo.getQuestionList(id);
+            if(data.Count != 10)
+            {
+                throw new Exception(MESSAGE.VALIDATE.TOTAL_QUESTION_INVALID);
+            }
+            return new BaseResponse(data);
+        }
+
+        public BaseResponse startExam(long id)
+        {
+            return new BaseResponse(_questionRepo.startExams(id));
         }
     }
 }

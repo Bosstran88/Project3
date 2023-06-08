@@ -6,7 +6,7 @@
 
         public long? QuestionId { get; set; }
 
-        public string? AnswerQuestion1 { get; set; }
+        public string? AnswerQuestion { get; set; }
 
         public int? Score { get; set; }
 

@@ -91,14 +91,14 @@ namespace Project3.Services
             return new BaseResponse(format);
         }
 
-        public BaseResponse listAnswerQuestion(long idQuestion)
-        {
-            return new BaseResponse(_answerQuestionRepo.GetAnswerQuestionList(idQuestion));
-        }
-
         public BaseResponse pagination(AnswerQuestionPageReq answerQuestionReq)
         {
             return new BaseResponse(_answerQuestionRepo.pagination(answerQuestionReq));
+        }
+
+        public BaseResponse listAnswerQuestion(long idQuestion)
+        {
+            return new BaseResponse(_answerQuestionRepo.getList(idQuestion));
         }
     }
 }

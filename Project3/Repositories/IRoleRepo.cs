@@ -66,7 +66,7 @@ namespace Project3.Repositories
                 param.Add(new SqlParameter("@roleName", SqlDbType.NVarChar) { Value = roleReq.RoleName.ToLower() });
             }
 
-            var query = _context.Set<Role>().FromSqlRaw(data.ToString())
+            var query = _context.Set<Role>().FromSqlRaw(data.ToString(), param.ToArray())
                 .OrderBy(r => r.NameRole)
                 .Select(r => new VRolePagin
                 {

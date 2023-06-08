@@ -28,6 +28,12 @@ namespace Project3.Controllers
             return Ok(_answerQuestionService.getOne(id));
         }
 
+        [HttpGet("getlist/{id}")]
+        public IActionResult getList(long id)
+        {
+            return Ok(_answerQuestionService.listAnswerQuestion(id));
+        }
+
         [HttpDelete("deleteById/{menuId}")]
         public async Task<IActionResult> deleteById(long menuId)
         {

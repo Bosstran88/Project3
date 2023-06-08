@@ -13,6 +13,8 @@ namespace Project3.Services
         BaseResponse deleteCourse(long id);
         BaseResponse createOrUpdate(AddCourseReq addCourseReq);
         BaseResponse pagination(CourseSearchReq filter);
+
+        BaseResponse getBydId(long id);
     }
     public class CourseService : ICourseService
     {
@@ -67,6 +69,11 @@ namespace Project3.Services
             data.UpdateAt = DateTime.Now;
             _courseRepo.deleteCourseRepo(data);
             return new BaseResponse();
+        }
+
+        public BaseResponse getBydId(long id)
+        {
+            return new BaseResponse(_courseRepo.getById(id));
         }
 
         public BaseResponse getOne(long id)

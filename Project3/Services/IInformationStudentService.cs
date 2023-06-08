@@ -18,6 +18,7 @@ namespace Project3.Services
     public class InformationStudentService : IInformationStudentService
     {
         IInformationStudentRepo inforRepo;
+        IQuestionRepo questionRepo;
 
         public InformationStudentService(IInformationStudentRepo _inforRepo)
         {

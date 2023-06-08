@@ -31,6 +31,12 @@
             public const string UNQUE_EMAIL = "Email này đã tồn tại !!!";
 
             public const string ANSWER_QUESTION_NOT_BIG_THAN_4 = "Câu trả lời đã vượt quá số lượng add thêm vui lòng xóa câu trả lời hoặc cập nhập lại câu trả lời !!";
+
+            // AnswerQuestionChose 
+            public const string ANSWER_QUESTION_NOT_FOUNT = "Không tìm thấy bài kiểm tra này";
+
+            //Question
+            public const string TOTAL_QUESTION_INVALID = "Tổng số câu hỏi có độ dài không hợp lệ , vui lòng thêm hoặc xóa bớt câu hỏi";
         }
 
         public class STATUS_RESPONSE
